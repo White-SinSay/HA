@@ -1,0 +1,127 @@
+#
+#####################################
+sensor:
+  - platform: history_stats
+    name: time_3dprint
+    entity_id: input_boolean.3d_pechat
+    state: 'on'
+    type: time
+    start: "{{ state_attr('automation.telegram_3d_pechat_nachata', 'last_triggered') }}"
+    end: "{{ state_attr('automation.telegram_3d_pechat_zakonchena', 'last_triggered') }}"
+#####################################
+input_boolean:
+  3d_pechat:
+    name: 3d_pechat
+    icon: mdi:printer-3d
+#####################################
+utility_meter:
+  power_3dprint: # 3D Печать
+     source: sensor.3d_print_energy
+     cycle: yearly
+     tariffs:
+      - single
+#####################################
+automation:
+  - alias: Telegram / 3D печать закончена
+    description: ''
+    trigger:
+      - type: power
+        platform: device
+        device_id: 6f69eff2555bd8c0379b75742e392120
+        entity_id: sensor.3d_print_power
+        domain: sensor
+        below: 30
+        for:
+          hours: 0
+          minutes: 0
+          seconds: 30
+    condition:
+      - condition: state
+        entity_id: input_boolean.3d_pechat
+        state: 'on'
+    action:
+      - data:
+          entity_id: camera.vivotek_1_profile1
+          filename: /media/zav.jpg
+        entity_id: camera.vivotek_1_profile1
+        service: camera.snapshot
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.3d_pechat
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 5
+          milliseconds: 0
+      - data:
+          message: >
+            {{"\U0001F5A8"}} Печать завершена
+    
+            {{"\U000023F3"}} Время печати: {{ state_attr('sensor.time_3dprint',
+            'value') }}
+    
+            {{"\U0001F50C"}} Потрачено: {{ states.sensor.power_3dprint_single.state
+            }} kWh
+        service: notify.telegram_white
+      - data:
+          data:
+            photo:
+              - caption: ZAV pro
+                file: /media/zav.jpg
+          message: test
+        service: notify.telegram_white
+    mode: single
+
+  - alias: Telegram / 3D печать закончена
+    description: ''
+    trigger:
+      - type: power
+        platform: device
+        device_id: 6f69eff2555bd8c0379b75742e392120
+        entity_id: sensor.3d_print_power
+        domain: sensor
+        below: 30
+        for:
+          hours: 0
+          minutes: 0
+          seconds: 30
+    condition:
+      - condition: state
+        entity_id: input_boolean.3d_pechat
+        state: 'on'
+    action:
+      - data:
+          entity_id: camera.vivotek_1_profile1
+          filename: /media/zav.jpg
+        entity_id: camera.vivotek_1_profile1
+        service: camera.snapshot
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.3d_pechat
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 5
+          milliseconds: 0
+      - data:
+          message: >
+            {{"\U0001F5A8"}} Печать завершена
+    
+            {{"\U000023F3"}} Время печати: {{ state_attr('sensor.time_3dprint',
+            'value') }}
+    
+            {{"\U0001F50C"}} Потрачено: {{ states.sensor.power_3dprint_single.state
+            }} kWh
+        service: notify.telegram_white
+      - data:
+          data:
+            photo:
+              - caption: ZAV pro
+                file: /media/zav.jpg
+          message: test
+        service: notify.telegram_white
+    mode: single
+
+
+
+
