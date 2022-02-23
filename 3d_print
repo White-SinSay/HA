@@ -21,8 +21,8 @@ utility_meter:
      tariffs:
       - single
 #####################################
-automation:
-  - alias: Telegram / 3D печать закончена
+  - automation:
+    alias: Telegram / 3D печать начата
     description: ''
     trigger:
       - type: power
@@ -30,46 +30,28 @@ automation:
         device_id: 6f69eff2555bd8c0379b75742e392120
         entity_id: sensor.3d_print_power
         domain: sensor
-        below: 30
         for:
           hours: 0
           minutes: 0
-          seconds: 30
+          seconds: 10
+        above: 31
     condition:
       - condition: state
         entity_id: input_boolean.3d_pechat
-        state: 'on'
+        state: 'off'
     action:
       - data:
-          entity_id: camera.vivotek_1_profile1
-          filename: /media/zav.jpg
-        entity_id: camera.vivotek_1_profile1
-        service: camera.snapshot
-      - service: input_boolean.turn_off
+          message: |
+            {{"\U0001F5A8"}} Печать начата
+        service: notify.telegram_white
+      - service: input_boolean.turn_on
         target:
           entity_id: input_boolean.3d_pechat
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 5
-          milliseconds: 0
-      - data:
-          message: >
-            {{"\U0001F5A8"}} Печать завершена
-    
-            {{"\U000023F3"}} Время печати: {{ state_attr('sensor.time_3dprint',
-            'value') }}
-    
-            {{"\U0001F50C"}} Потрачено: {{ states.sensor.power_3dprint_single.state
-            }} kWh
-        service: notify.telegram_white
-      - data:
-          data:
-            photo:
-              - caption: ZAV pro
-                file: /media/zav.jpg
-          message: test
-        service: notify.telegram_white
+        data: {}
+      - service: utility_meter.reset
+        target:
+          entity_id: utility_meter.power_3dprint
+        data: {}
     mode: single
 
   - alias: Telegram / 3D печать закончена
