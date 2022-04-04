@@ -1,0 +1,20 @@
+views:
+  - title: ir_control
+    id: ir
+    icon: mdi:remote
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: media-control
+            entity: media_player.tv_samsung_led40
+          - type: media-control
+            entity: media_player.mitv_mssp1
+          - type: media-control
+            entity: media_player.tv_pristavka_mi_tv_stick
+          - type: media-control
+            entity: media_player.yandex_station_kitchen
+          - type: media-control
+            entity: media_player.yandex_station_bedroom
+      - type: media-control
+        entity: media_player.ue40f6800
+title: Main

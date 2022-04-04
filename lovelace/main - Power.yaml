@@ -1,0 +1,137 @@
+views:
+  - title: Power
+    id: data
+    icon: mdi:counter
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: binary_sensor.pzem_home_ds
+                type: custom:multiple-entity-row
+                name: Дом
+                icon: mdi:counter
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: black;
+                      color: black;
+                    }
+                entities:
+                  - entity: sensor.pz1_v
+                    name: false
+                  - entity: sensor.pz1_hz
+                    name: false
+              - entity: sensor.pz1_a
+                type: custom:multiple-entity-row
+                name: Электроплита
+                icon: mdi:counter
+                secondary_info: last-changed
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: #B8860B;
+                      color: #B8860B;
+                    }
+                entities:
+                  - entity: sensor.pz1_a_max
+                    name: false
+                  - entity: sensor.pz1_energy
+                    name: false
+              - entity: sensor.pz2_a
+                type: custom:multiple-entity-row
+                name: Кабинет
+                icon: mdi:counter
+                secondary_info: last-changed
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: #FF0000;
+                      color: #FF0000;
+                    }
+                entities:
+                  - entity: sensor.pz2_a_max
+                    name: false
+                  - entity: sensor.pz2_energy
+                    name: false
+              - entity: sensor.pz3_a
+                type: custom:multiple-entity-row
+                name: Комнаты
+                icon: mdi:counter
+                secondary_info: last-changed
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: #008000;
+                      color: #008000;
+                    }
+                entities:
+                  - entity: sensor.pz3_a_max
+                    name: false
+                  - entity: sensor.pz3_energy
+                    name: false
+              - entity: sensor.pz4_a
+                type: custom:multiple-entity-row
+                name: Кухня
+                icon: mdi:counter
+                secondary_info: last-changed
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: #0000FF;
+                      color: #0000FF;
+                    }
+                entities:
+                  - entity: sensor.pz4_a_max
+                    name: false
+                  - entity: sensor.pz4_energy
+                    name: false
+              - entity: sensor.pz0_a
+                type: custom:multiple-entity-row
+                name: Общее
+                icon: mdi:counter
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: #483D8B;
+                      color: #483D8B;
+                    }
+                entities:
+                  - entity: sensor.pz0_energy
+                    name: false
+              - entity: sensor.total_drink_water_yearly_round
+                type: custom:multiple-entity-row
+                name: Питьевая
+                state_header: Год
+                icon: mdi:cup-water
+                entities:
+                  - entity: sensor.total_drink_water_daily_round
+                    name: День
+                  - entity: sensor.total_drink_water_monthly_round
+                    name: Месяц
+              - type: divider
+              - entity: sensor.pz1_energy_monthly_single
+                name: PZ1 monthly
+              - entity: sensor.pz2_energy_monthly_single
+                name: PZ2 monthly
+              - entity: sensor.pz3_energy_monthly_single
+                name: PZ3 monthly
+              - entity: sensor.pz4_energy_monthly_single
+                name: PZ4 monthly
+              - entity: sensor.pz0_energy_monthly_single
+                name: PZ0 monthly
+              - entity: sensor.pz0_energy_real
+                type: custom:multiple-entity-row
+                name: Электросчётчик
+                icon: mdi:counter
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: #483D8B;
+                      color: #483D8B;
+                    }
+                entities:
+                  - entity: input_number.korektirovka_pokazanii
+                    name: false
+          - type: energy-devices-graph
+title: Main

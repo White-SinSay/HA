@@ -1,0 +1,65 @@
+title: Home Assistant
+views:
+  - title: Ёлка
+    path: ''
+    icon: phu:christmas-tree-v2
+    badges: []
+    cards:
+      - type: conditional
+        conditions:
+          - entity: light.wled
+            state_not: unavailable
+        card:
+          type: entities
+          entities:
+            - entity: light.wled
+            - entity: switch.wled_nightlight
+            - entity: sensor.wled_estimated_current
+            - entity: select.wled_playlist
+            - entity: select.wled_preset
+            - entity: select.wled_color_palette
+          show_header_toggle: false
+      - type: conditional
+        conditions:
+          - entity: light.wled_2
+            state_not: unavailable
+        card:
+          type: entities
+          entities:
+            - entity: light.wled_2
+            - entity: switch.wled_nightlight_2
+            - entity: sensor.wled_estimated_current_2
+            - entity: select.wled_playlist_2
+            - entity: select.wled_preset_2
+            - entity: select.wled_color_palette_2
+          show_header_toggle: false
+      - type: conditional
+        conditions:
+          - entity: light.gyver_lamp
+            state_not: unavailable
+        card:
+          type: custom:light-entity-card
+          shorten_cards: false
+          consolidate_entities: true
+          child_card: false
+          hide_header: false
+          header: Гайвер лампа
+          color_wheel: false
+          persist_features: true
+          brightness: true
+          color_temp: false
+          white_value: false
+          color_picker: false
+          smooth_color_wheel: true
+          speed: true
+          intensity: true
+          force_features: false
+          show_slider_percent: true
+          full_width_sliders: false
+          brightness_icon: weather-sunny
+          white_icon: file-word-box
+          temperature_icon: thermometer
+          speed_icon: speedometer
+          intensity_icon: transit-connection-horizontal
+          entity: light.gyver_lamp
+          effects_list: true

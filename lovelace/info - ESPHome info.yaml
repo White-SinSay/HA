@@ -1,0 +1,390 @@
+title: Home Assistant
+views:
+  - title: ESPHome info
+    path: esphome-info
+    icon: mdi:chip
+    visible:
+      - user: 4da17e9fae8a4ed093e03642ca4647c5
+      - user: 88ac44474da4472ea6e5379505eb01d6
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+    badges: []
+    cards:
+      - type: entities
+        entities:
+          - entity: switch.bathroom_restart
+            type: custom:multiple-entity-row
+            name: bathroom
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.bathroom_online
+                name: Uptime
+              - entity: sensor.bathroom_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.bathroom_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.bedroom_restart
+            type: custom:multiple-entity-row
+            name: bedroom
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.bedroom_online
+                name: Uptime
+              - entity: sensor.bedroom_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.bedroom_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.kabinet_restart
+            type: custom:multiple-entity-row
+            name: kabinet
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.kabinet_online
+                name: Uptime
+              - entity: sensor.kabinet_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.kabinet_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.kitchen_restart
+            type: custom:multiple-entity-row
+            name: kitchen
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.kitchen_online
+                name: Uptime
+              - entity: sensor.kitchen_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.kitchen_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.domofon_restart
+            type: custom:multiple-entity-row
+            name: domofon
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.domofon_online
+                name: Uptime
+              - entity: sensor.domofon_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.domofon_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.powerpc_denis_restart
+            type: custom:multiple-entity-row
+            name: powerpc_denis
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.powerpc_denis_online
+                name: Uptime
+              - entity: sensor.powerpc_denis_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.powerpc_denis_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.powerpc_trm_restart
+            type: custom:multiple-entity-row
+            name: powerpc_trm
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.powerpc_trm_online
+                name: Uptime
+              - entity: sensor.powerpc_trm_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.powerpc_trm_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.powerpc_white_restart
+            type: custom:multiple-entity-row
+            name: powerpc_white
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.powerpc_white_online
+                name: Uptime
+              - entity: sensor.powerpc_white_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.powerpc_white_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.pzem_home_restart
+            type: custom:multiple-entity-row
+            name: pzem_home
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.pzem_home_online
+                name: Uptime
+              - entity: sensor.pzem_home_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.pzem_home_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.sonoff_basic_2_restart
+            type: custom:multiple-entity-row
+            name: sonoff_basic_2
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.sonoff_basic_2_online
+                name: Uptime
+              - entity: sensor.sonoff_basic_2_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.sonoff_basic_2_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.sonoff_mini_1_restart
+            type: custom:multiple-entity-row
+            name: sonoff_mini_1
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.sonoff_mini_1_online
+                name: Uptime
+              - entity: sensor.sonoff_mini_1_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.sonoff_mini_1_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.wardrobe_restart
+            type: custom:multiple-entity-row
+            name: wardrobe
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.wardrobe_online
+                name: Uptime
+              - entity: sensor.wardrobe_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.wardrobe_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+      - type: entities
+        entities:
+          - entity: switch.powerpc_office1_restart
+            type: custom:multiple-entity-row
+            name: powerpc_office1
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.powerpc_office1_online
+                name: Uptime
+              - entity: sensor.powerpc_office1_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.powerpc_office1_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.d1_mini_office_restart
+            type: custom:multiple-entity-row
+            name: d1_mini_office
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.d1_mini_office_online
+                name: Uptime
+              - entity: sensor.d1_mini_office_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.d1_mini_office_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.pzem_office_restart
+            type: custom:multiple-entity-row
+            name: pzem_office
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.pzem_office_online
+                name: Uptime
+              - entity: sensor.pzem_office_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.pzem_office_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - type: divider
+          - entity: switch.28_396_restart
+            type: custom:multiple-entity-row
+            name: 28-396
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.28_396_online
+                name: Uptime
+              - entity: sensor.28_396_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.28_396_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.kolegov_restart
+            type: custom:multiple-entity-row
+            name: kolegov
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.kolegov_online
+                name: Uptime
+              - entity: sensor.kolegov_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.kolegov_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }

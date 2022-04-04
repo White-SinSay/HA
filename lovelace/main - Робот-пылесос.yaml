@@ -1,0 +1,77 @@
+views:
+  - title: Робот-пылесос
+    id: vacuum
+    icon: mdi:robot-vacuum
+    cards:
+      - type: custom:xiaomi-vacuum-map-card
+        language: ru
+        map_source:
+          camera: camera.xiaomi_cloud_map_extractor
+        calibration_source:
+          camera: true
+        entity: vacuum.masha
+        vacuum_platform: default
+        map_locked: true
+        two_finger_pan: true
+        map_modes:
+          - template: vacuum_clean_zone_predefined
+            predefined_selections:
+              - zones:
+                  - - 25262
+                    - 23027
+                    - 29412
+                    - 25877
+                icon:
+                  name: mdi:bed-king
+                  x: 27500
+                  'y': 24500
+              - zones:
+                  - - 32303
+                    - 22678
+                    - 35353
+                    - 25628
+                icon:
+                  name: hue:room-office
+                  x: 34000
+                  'y': 24500
+              - zones:
+                  - - 29827
+                    - 30305
+                    - 32527
+                    - 31755
+                  - - 29649
+                    - 25749
+                    - 31549
+                    - 30249
+                  - - 29401
+                    - 24298
+                    - 32401
+                    - 25798
+                icon:
+                  name: phu:rooms-hallway
+                  x: 30500
+                  'y': 27500
+              - zones:
+                  - - 32633
+                    - 30199
+                    - 35683
+                    - 32599
+                icon:
+                  name: mdi:silverware-fork-knife
+                  x: 34500
+                  'y': 31500
+              - zones:
+                  - - 31690
+                    - 25733
+                    - 35590
+                    - 30083
+                icon:
+                  name: hue:room-nursery
+                  x: 34500
+                  'y': 28500
+          - template: vacuum_clean_zone
+      - type: custom:xiaomi-vacuum-card
+        name: Ксюша
+        vendor: xiaomi
+        entity: vacuum.office_roborock_vacuum_e2
+title: Main

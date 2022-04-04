@@ -1,0 +1,271 @@
+views:
+  - title: Network
+    id: network
+    icon: mdi:ethernet
+    visible:
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: entities
+                entities:
+                  - entity: sensor.online
+                    name: Дом
+                  - entity: sensor.office_online
+                    name: Офис
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                name: CPU_M
+                entity: sensor.cpu_temperature
+                severity:
+                  green: 0
+                  yellow: 45
+                  red: 60
+                min: 0
+                max: 100
+              - type: gauge
+                name: CPU_M
+                unit: '%'
+                entity: sensor.processor_use
+                severity:
+                  green: 0
+                  yellow: 50
+                  red: 85
+              - type: gauge
+                name: ОЗУ_M
+                unit: '%'
+                entity: sensor.memory_use_percent
+                severity:
+                  green: 0
+                  yellow: 60
+                  red: 85
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                name: CPU_O
+                entity: sensor.office_processor_temperature
+                theme: oxfordblue
+                severity:
+                  green: 0
+                  yellow: 60
+                  red: 85
+              - type: gauge
+                name: CPU_O
+                unit: '%'
+                entity: sensor.office_processor_use_percent
+                theme: oxfordblue
+                severity:
+                  green: 0
+                  yellow: 50
+                  red: 85
+              - type: gauge
+                entity: sensor.office_memory_use_percent
+                min: 0
+                name: ОЗУ_О
+                severity:
+                  green: 0
+                  yellow: 60
+                  red: 85
+                max: 100
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                name: HDD use
+                unit: '%'
+                entity: sensor.disk_use_percent
+                severity:
+                  green: 0
+                  yellow: 60
+                  red: 85
+                min: 0
+                max: 100
+              - type: gauge
+                name: Размер БД
+                unit: Mb
+                entity: sensor.home_assistant_v2_db
+                max: 1536
+                severity:
+                  green: 0
+                  yellow: 1024
+                  red: 1536
+              - type: gauge
+                name: HDD use
+                unit: '%'
+                entity: sensor.office_disk_use_percent
+                theme: oxfordblue
+                severity:
+                  green: 0
+                  yellow: 60
+                  red: 85
+                max: 100
+              - type: gauge
+                name: Размер БД
+                unit: Mb
+                entity: sensor.office_home_assistant_v2_db
+                theme: oxfordblue
+                max: 1024
+                severity:
+                  green: 0
+                  yellow: 768
+                  red: 1024
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: sensor.rb760igs_temperature
+              - entity: sensor.rb760igs_wireless_clients
+              - entity: sensor.rb760igs_cpu_load
+              - entity: sensor.rb760igs_voltage
+              - entity: sensor.rb760igs_hdd_usage
+              - entity: sensor.rb760igs_memory_usage
+              - type: divider
+              - entity: binary_sensor.rpi_power_status
+                name: RPi Power status Home
+                card_mod:
+                  style: |
+                    :host {
+                      color: 
+                        {% if is_state('binary_sensor.rpi_power_status', 'off') %}
+                          green
+                        {% else %}
+                          red
+                        {% endif %}
+                        ;
+                      --paper-item-icon-color:
+                        {% if is_state('binary_sensor.rpi_power_status', 'off') %}
+                          green
+                        {% else %}
+                          red
+                        {% endif %}
+                        ;
+                      }
+
+                    }
+              - entity: binary_sensor.office_rpi_power_status
+                name: RPi Power status Office
+                card_mod:
+                  style: |
+                    :host {
+                      color: 
+                        {% if is_state('binary_sensor.office_rpi_power_status', 'off') %}
+                          green
+                        {% else %}
+                          red
+                        {% endif %}
+                        ;
+                      --paper-item-icon-color:
+                        {% if is_state('binary_sensor.office_rpi_power_status', 'off') %}
+                          green
+                        {% else %}
+                          red
+                        {% endif %}
+                        ;
+                      }
+
+                    }
+              - type: divider
+              - entity: sensor.hp_home_paper_print_daily
+                type: custom:multiple-entity-row
+                name: HP home
+                state_header: daily
+                icon: mdi:printer
+                entities:
+                  - entity: sensor.hp_home_paper_print
+                    name: all
+                  - entity: sensor.hp_home_paper_print_monthly
+                    name: monthly
+              - entity: sensor.kyocera_paper_print_daily
+                type: custom:multiple-entity-row
+                name: Kyocera
+                state_header: daily
+                icon: mdi:printer
+                entities:
+                  - entity: sensor.kyocera_paper_print
+                    name: all
+                  - entity: sensor.kyocera_paper_print_monthly
+                    name: monthly
+      - type: entities
+        entities:
+          - entity: sensor.powerpc_white_temperature
+            type: custom:multiple-entity-row
+            name: White PC
+            state_header: null
+            toggle: false
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: sensor.powerpc_white_12v
+                name: false
+                toggle: false
+          - entity: sensor.powerpc_denis_temperature
+            type: custom:multiple-entity-row
+            name: Denis PC
+            state_header: null
+            toggle: false
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: sensor.powerpc_denis_12v
+                name: false
+                toggle: false
+          - entity: sensor.powerpc_trm_temperature
+            type: custom:multiple-entity-row
+            name: TRM PC
+            state_header: null
+            toggle: false
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: sensor.powerpc_trm_12v
+                name: false
+                toggle: false
+          - entity: sensor.powerpc_office1_temperature
+            type: custom:multiple-entity-row
+            name: Office PC
+            state_header: null
+            toggle: false
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: sensor.powerpc_office1_12v
+                name: false
+                toggle: false
+          - type: divider
+          - entity: sensor.kolegov_temperature
+            type: custom:multiple-entity-row
+            name: Kolegov
+            state_header: null
+            toggle: false
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: sensor.kolegov_pc_on_today
+                type: attribute
+                attribute: value
+                name: false
+                toggle: false
+              - entity: sensor.kolegov_12v
+                name: false
+                toggle: false
+          - entity: switch.kolegov_power
+            type: custom:multiple-entity-row
+            name: Колегов
+            state_header: power
+            toggle: true
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: switch.kolegov_power_hold
+                name: hold
+                toggle: true
+      - type: entities
+        entities:
+          - entity: button.rb760igs_script_access_list_enable
+            name: WiFi acces-list/enable
+          - entity: button.rb760igs_script_access_list_disable
+            name: WiFi acces-list/disable
+        show_header_toggle: false
+title: Main

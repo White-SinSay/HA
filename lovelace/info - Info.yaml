@@ -1,0 +1,104 @@
+title: Home Assistant
+views:
+  - title: Info
+    path: info
+    icon: mdi:information-variant
+    visible:
+      - user: 4da17e9fae8a4ed093e03642ca4647c5
+      - user: 88ac44474da4472ea6e5379505eb01d6
+      - user: edffae24d17b42489027f6f954f1386f
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+      - user: 213c53e24f984a97ab91e7c051a19180
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: binary_sensor.samsung_m12
+                type: custom:multiple-entity-row
+                name: Mobile
+                state_header: Денис
+                toggle: false
+                state_color: false
+                icon: mdi:cellphone
+                show_state: false
+                entities:
+                  - entity: binary_sensor.note9
+                    name: Вова
+                    toggle: false
+                    icon: mdi:cellphone
+                    state_color: true
+                  - entity: binary_sensor.honor9x
+                    name: Таня
+                    toggle: false
+                    icon: mdi:cellphone
+                    state_color: true
+                  - entity: binary_sensor.samsung_m12
+                    name: Денис
+                    toggle: false
+                    icon: mdi:cellphone
+                    state_color: true
+          - type: custom:logbook-card
+            title: Входная дверь
+            entity: binary_sensor.koridor_door
+            hiddenState:
+              - 'off'
+              - unavailable
+            max_items: 2
+            show:
+              end_date: false
+              start_date: true
+            state_map: null
+          - type: entities
+            title: Окна
+            entities:
+              - entity: binary_sensor.okno_kukhnia_contact
+                icon: mdi:window-closed-variant
+                state_color: true
+                name: Кухня
+                secondary_info: last-changed
+              - entity: binary_sensor.okno_spalnia_contact
+                icon: mdi:window-closed-variant
+                state_color: true
+                name: Спальня
+                secondary_info: last-changed
+              - entity: binary_sensor.okno_detskaia_contact
+                icon: mdi:window-closed-variant
+                state_color: true
+                name: Детская
+                secondary_info: last-changed
+          - type: entities
+            title: Движение
+            state_color: true
+            entities:
+              - entity: binary_sensor.childroom_pir
+                secondary_info: last-changed
+                name: Детская
+              - entity: binary_sensor.koridor_pir1
+                secondary_info: last-changed
+                name: Вход
+              - entity: binary_sensor.koridor_pir2
+                secondary_info: last-changed
+                name: Коридор
+              - entity: binary_sensor.balkon_mpir
+                secondary_info: last-changed
+                name: Балкон
+              - entity: binary_sensor.kitchen_mpir
+                secondary_info: last-changed
+                name: Кухня
+              - entity: binary_sensor.bathroom_pir
+                secondary_info: last-changed
+                name: Туалет
+      - type: custom:auto-entities
+        card:
+          type: entities
+          title: Отключеные автоматизации
+        filter:
+          include:
+            - domain: automation
+              state: 'off'
+          exclude: []
+        show_empty: false
+        sort:
+          method: none

@@ -1,0 +1,112 @@
+views:
+  - title: Служебное
+    path: mdi:tune
+    icon: mdi:tune-variant
+    badges: []
+    cards:
+      - type: entities
+        entities:
+          - entity: switch.powerpc_white_power
+            type: custom:multiple-entity-row
+            name: White PC
+            state_header: power
+            toggle: true
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: switch.powerpc_white_power_hold
+                name: hold
+                toggle: true
+          - entity: switch.powerpc_denis_power
+            type: custom:multiple-entity-row
+            name: Denis PC
+            state_header: power
+            toggle: true
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: switch.powerpc_denis_power_hold
+                name: hold
+                toggle: true
+          - entity: switch.powerpc_trm_power
+            type: custom:multiple-entity-row
+            name: TRM PC
+            state_header: power
+            toggle: true
+            state_color: true
+            icon: mdi:desktop-tower
+            entities:
+              - entity: switch.powerpc_trm_power_hold
+                name: hold
+                toggle: true
+      - type: entities
+        entities:
+          - entity: cover.kabinet_windows
+            secondary_info: position
+            name: Кабинет
+          - entity: switch.kabinet_setup_switch
+            type: custom:multiple-entity-row
+            name: Калибровка
+            state_header: switch
+            toggle: true
+            state_color: false
+            icon: mdi:window-shutter-alert
+            entities:
+              - entity: switch.kabinet_setup_button
+                name: button
+                toggle: true
+      - type: entities
+        entities:
+          - entity: switch.kitchen_fan3
+            type: custom:multiple-entity-row
+            name: Вытяжка
+            state_header: fan3
+            toggle: true
+            state_color: false
+            icon: mdi:fan
+            entities:
+              - entity: switch.kitchen_fan1
+                name: fan1
+                toggle: true
+              - entity: switch.kitchen_fan2
+                name: fan2
+                toggle: true
+          - entity: switch.fan_bathroom
+            type: custom:multiple-entity-row
+            name: Вентиляция
+            state_header: Ванна
+            toggle: true
+            state_color: false
+            entities:
+              - entity: switch.fan_toilet
+                name: Туалет
+                toggle: true
+      - type: entities
+        entities:
+          - entity: light.bedroom_tv
+            secondary_info: brightness
+            icon: phu:lightstrip-tv
+          - entity: switch.sonoff_1000a22106
+          - entity: switch.3d_print
+            type: custom:multiple-entity-row
+            name: ZAV Pro
+            toggle: true
+            state_color: false
+            entities:
+              - entity: sensor.3d_print_energy
+                name: false
+              - entity: sensor.3d_print_current
+                name: false
+              - entity: sensor.3d_print_power
+                name: false
+          - entity: sensor.3d_print_power_max
+      - type: entities
+        entities:
+          - entity: binary_sensor.sonoff_mini_1_water
+            name: Увлажнитель
+          - entity: switch.glade
+            secondary_info: last-changed
+          - entity: switch.rb760igs_nat_rdp
+          - entity: switch.rb760igs_nat_rdp_2
+          - entity: switch.domofon_automatically_open
+title: Main

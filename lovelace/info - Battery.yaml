@@ -1,0 +1,35 @@
+title: Home Assistant
+views:
+  - title: Battery
+    path: battery
+    icon: mdi:battery-charging-high
+    badges: []
+    cards:
+      - type: custom:battery-state-card
+        sort_by_level: asc
+        collapse: 50
+        entities:
+          - entity: sensor.okno_kukhnia_battery
+            name: Окно кухня
+            tap_action: more-info
+          - entity: sensor.okno_spalnia_battery
+            name: Окно спальня
+            tap_action: more-info
+          - entity: sensor.okno_detskaia_battery
+            name: Окно детская
+            tap_action: more-info
+          - entity: sensor.bedroom_battery_level
+            name: Термометр спальня
+            tap_action: more-info
+          - entity: sensor.cabinet_battery_level
+            name: Термометр кабинет
+            tap_action: more-info
+          - entity: sensor.kitchen_battery_level
+            name: Термометр кухня
+            tap_action: more-info
+          - entity: sensor.childroom_battery_level
+            name: Термометр детская
+            tap_action: more-info
+          - entity: sensor.office_ble_battery_lywsd03mmc
+            name: Термометр офис
+            tap_action: more-info

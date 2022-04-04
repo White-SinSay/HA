@@ -1,0 +1,429 @@
+views:
+  - title: План
+    id: plan
+    icon: mdi:floor-plan
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: picture-elements
+            image: /local/plan.png
+            elements:
+              - entity: switch.sonoff_100093fe75
+                style:
+                  left: 47%
+                  top: 27%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.sonoff_10009402e8
+                style:
+                  left: 27%
+                  top: 22%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.sonoff_1000af511a_1
+                style:
+                  left: 40.5%
+                  top: 18%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.sonoff_1000af511a_2
+                style:
+                  left: 51%
+                  top: 18%
+                  '--iron-icon-height': 20px
+                  '--iron-icon-width': 20px
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.sonoff_1000cbe41c_1
+                style:
+                  left: 30%
+                  top: 47%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.sonoff_1000cbe41c_2
+                style:
+                  left: 22%
+                  top: 60%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.sonoff_1000cbe8bb_1
+                style:
+                  left: 38%
+                  top: 37%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.sonoff_1000cbe8bb_2
+                style:
+                  left: 21%
+                  top: 37%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.koridor_ch1
+                style:
+                  left: 50%
+                  top: 70%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.koridor_ch2
+                style:
+                  left: 50%
+                  top: 50%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.koridor_ch3
+                style:
+                  left: 39%
+                  top: 75%
+                  transform: scale(0.8,0.8)
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: light.kabinet_led_white
+                style:
+                  left: 32%
+                  top: 13%
+                type: state-icon
+                tap_action:
+                  action: toggle
+              - entity: light.kabinet_led_denis
+                style:
+                  left: 20%
+                  top: 13%
+                type: state-icon
+                tap_action:
+                  action: toggle
+              - entity: vacuum.masha
+                style:
+                  left: 54%
+                  top: 60%
+                type: state-icon
+                tap_action:
+                  action: navigate
+                  navigation_path: 6
+              - entity: switch.sonoff_1000cbe48c_1
+                style:
+                  left: 28%
+                  top: 74%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.sonoff_1000cbe48c_2
+                style:
+                  left: 28%
+                  top: 67%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.sonoff_1000cbebc6_1
+                style:
+                  left: 80%
+                  top: 20%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.sonoff_1000cbebc6_2
+                style:
+                  left: 70%
+                  top: 20%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.domofon_automatically_open_once
+                style:
+                  left: 5%
+                  top: 5%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.domofon_mute_sound
+                style:
+                  left: 5%
+                  top: 13%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: binary_sensor.domofon_incoming_call
+                style:
+                  left: 5%
+                  top: 21%
+                tap_action:
+                  action: more-info
+                type: state-icon
+              - entity: binary_sensor.tv_xiaomi
+                icon: mdi:television
+                style:
+                  left: 75%
+                  top: 28%
+                tap_action:
+                  action: navigate
+                  navigation_path: 8
+                type: state-icon
+              - entity: binary_sensor.tv_samsung
+                icon: mdi:television
+                style:
+                  left: 30%
+                  top: 60%
+                tap_action:
+                  action: navigate
+                  navigation_path: 8
+                type: state-icon
+              - entity: switch.sonoff_1000a2898d
+                icon: mdi:stove
+                style:
+                  left: 30%
+                  top: 81%
+                tap_action:
+                  action: toggle
+                  confirmation:
+                    text: Вы уверены?
+                type: state-icon
+                card_mod:
+                  style: |
+                    :host {
+                      --card-mod-icon-color: 
+                          {% if states('sensor.pz1_a') | float  == 0 %}
+                            grey
+                          {% elif states('sensor.pz1_a') | float > 0.05 %}
+                            #c91104           
+                          {% else %}
+                            #44739e
+                          {% endif %}
+                          ;
+                          }
+              - type: state-label
+                entity: sensor.pz1_a
+                style:
+                  left: 30%
+                  top: 88%
+                  font-size: 12px
+                  color: '#B8860B'
+              - type: state-label
+                entity: sensor.time
+                style:
+                  left: 94%
+                  top: 3%
+                  font-size: 15px
+              - entity: light.bedroom_cupboard
+                style:
+                  left: 61%
+                  top: 14%
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - entity: switch.sonoff_1000a21d1d
+                style:
+                  left: 16%
+                  top: 24%
+                  transform: rotate(180deg)
+                tap_action:
+                  action: toggle
+                type: state-icon
+              - type: conditional
+                conditions:
+                  - entity: switch.kitchen_fan1
+                    state: 'on'
+                elements:
+                  - type: state-icon
+                    entity: switch.kitchen_fan1
+                    state_color: false
+                    tap_action:
+                      action: toggle
+                    style:
+                      left: 33%
+                      top: 76.5%
+                      transform: scale(0.8,0.8)
+              - type: conditional
+                conditions:
+                  - entity: switch.kitchen_fan2
+                    state: 'on'
+                elements:
+                  - type: state-icon
+                    entity: switch.kitchen_fan2
+                    state_color: false
+                    tap_action:
+                      action: toggle
+                    style:
+                      left: 33%
+                      top: 76.5%
+                      transform: scale(0.8,0.8)
+              - type: conditional
+                conditions:
+                  - entity: switch.kitchen_fan3
+                    state: 'on'
+                elements:
+                  - type: state-icon
+                    entity: switch.kitchen_fan3
+                    state_color: false
+                    tap_action:
+                      action: toggle
+                    style:
+                      left: 33%
+                      top: 76.5%
+                      transform: scale(0.8,0.8)
+              - entity: binary_sensor.white_presence
+                style:
+                  left: 85%
+                  top: 95%
+                  '--paper-item-icon-active-color': green
+                tap_action:
+                  action: more-info
+                type: state-icon
+              - entity: binary_sensor.taneza_presence
+                style:
+                  left: 90%
+                  top: 95%
+                  '--paper-item-icon-active-color': green
+                tap_action:
+                  action: more-info
+                type: state-icon
+              - entity: binary_sensor.denis_presence
+                style:
+                  left: 95%
+                  top: 95%
+                  '--paper-item-icon-active-color': green
+                tap_action:
+                  action: more-info
+                type: state-icon
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.super_light
+                    state: 'on'
+                elements:
+                  - entity: script.1590857009869
+                    icon: mdi:lightbulb-group-off-outline
+                    style:
+                      left: 79%
+                      top: 40%
+                      transform: scale(-2.5,2.5)
+                    type: state-icon
+                    tap_action:
+                      action: call-service
+                      service: script.turn_on
+                      service_data:
+                        entity_id: script.1590857009869
+                    double_tap_action:
+                      action: call-service
+                      service: script.turn_on
+                      service_data:
+                        entity_id: script.1590857009870
+              - entity: binary_sensor.koridor_door
+                style:
+                  left: 52%
+                  top: 78%
+                tap_action:
+                  action: more-info
+                type: state-icon
+              - type: conditional
+                conditions:
+                  - entity: binary_sensor.new_year
+                    state: 'on'
+                elements:
+                  - entity: light.wled
+                    icon: phu:christmas-tree-v2
+                    style:
+                      left: 79%
+                      top: 60%
+                      transform: scale(-2.5,2.5)
+                    type: state-icon
+                    tap_action:
+                      action: navigate
+                      navigation_path: /lovelace-test/1
+              - entity: switch.powerpc_white_power
+                icon: mdi:desktop-tower-monitor
+                style:
+                  left: 32%
+                  top: 4%
+                tap_action:
+                  action: more-info
+                type: state-icon
+              - entity: switch.powerpc_denis_power
+                icon: mdi:desktop-tower-monitor
+                style:
+                  left: 20%
+                  top: 4%
+                tap_action:
+                  action: more-info
+                type: state-icon
+              - entity: switch.powerpc_trm_power
+                icon: mdi:desktop-tower
+                style:
+                  left: 44%
+                  top: 88%
+                tap_action:
+                  action: more-info
+                type: state-icon
+              - type: icon
+                icon: mdi:youtube
+                style:
+                  left: 5%
+                  top: 94%
+                card_mod:
+                  style: |
+                    :host {
+                      color: red
+              - type: conditional
+                conditions:
+                  - entity: sensor.subscribers
+                    state_not: unknown
+                elements:
+                  - type: state-label
+                    entity: sensor.subscribers
+                    state_color: false
+                    style:
+                      left: 11%
+                      top: 94%
+                      font-size: 12px
+          - type: entity-filter
+            show_header_toggle: false
+            show_empty: false
+            entities:
+              - entity: timer.3h_stove
+                name: Коврик 3ч
+            state_filter:
+              - active
+          - type: entity-filter
+            show_header_toggle: false
+            show_empty: false
+            entities:
+              - entity: timer.light_turnoff
+                name: Отключение света через
+            state_filter:
+              - active
+          - type: entity-filter
+            show_header_toggle: false
+            show_empty: false
+            entities:
+              - entity: timer.light_turnoff_60m
+                name: Отключение света через
+            state_filter:
+              - active
+      - type: entity-filter
+        entities:
+          - entity: binary_sensor.bathroom_water_leak1
+          - entity: binary_sensor.bathroom_water_leak2
+          - entity: binary_sensor.bathroom_water_leak3
+          - entity: binary_sensor.bathroom_water_leak4
+          - type: divider
+          - entity: binary_sensor.wardrobe_water_leak1
+          - entity: binary_sensor.wardrobe_water_leak2
+          - entity: binary_sensor.wardrobe_water_leak3
+          - type: divider
+          - entity: binary_sensor.28_396_water_leak1
+          - entity: binary_sensor.28_396_water_leak2
+          - entity: binary_sensor.28_396_water_leak3
+        title: Протечка воды
+        show_empty: false
+        state_filter:
+          - value: 'on'
+title: Main

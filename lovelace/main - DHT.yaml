@@ -1,0 +1,167 @@
+views:
+  - title: DHT
+    id: dht
+    icon: mdi:home-thermometer-outline
+    cards:
+      - type: vertical-stack
+        cards:
+          - entity: weather.yandex_weather
+            type: weather-forecast
+            show_forecast: false
+            show_current: true
+            secondary_info_attribute: wind_speed
+            name: Красноярск
+            theme: Animated Weather Card
+          - type: entities
+            entities:
+              - entity: sensor.30_299_temperature
+                name: Средняя
+              - entity: sensor.childroom_temperature
+                type: custom:multiple-entity-row
+                secondary_info: last-changed
+                name: Детская
+                entities:
+                  - entity: sensor.childroom_humidity
+                    name: false
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color:
+                        {% if states(config.entity)|int < 25 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                    }
+              - entity: sensor.bedroom_temperature
+                type: custom:multiple-entity-row
+                secondary_info: last-changed
+                name: Спальня
+                entities:
+                  - entity: sensor.bedroom_humidity
+                    name: false
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color:
+                        {% if states(config.entity)|int < 25 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                    }
+              - entity: sensor.kitchen_temperature
+                type: custom:multiple-entity-row
+                secondary_info: last-changed
+                name: Кухня
+                entities:
+                  - entity: sensor.kitchen_humidity
+                    name: false
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color:
+                        {% if states(config.entity)|int < 25 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                    }
+              - entity: sensor.cabinet_temperature
+                type: custom:multiple-entity-row
+                secondary_info: last-changed
+                name: Кабинет
+                entities:
+                  - entity: sensor.cabinet_humidity
+                    name: false
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color:
+                        {% if states(config.entity)|int < 25 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                    }
+              - entity: sensor.wardrobe_temperature
+                type: custom:multiple-entity-row
+                secondary_info: last-changed
+                name: Гардеробная
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color:
+                        {% if states(config.entity)|int < 25 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                    }
+              - entity: sensor.28_396_temperature
+                type: custom:multiple-entity-row
+                secondary_info: last-changed
+                name: 28-396
+                entities:
+                  - entity: sensor.28_396_humidity
+                    name: false
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color:
+                        {% if states(config.entity)|int < 25 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                    }
+              - type: divider
+              - entity: sensor.magicair_co2
+          - type: custom:mini-climate
+            entity: climate.tion_breezer_4s_1
+            temperature:
+              unit: °C
+              round: 1
+              source:
+                entity: sensor.temperature
+            indicators:
+              co2:
+                icon:
+                  template: () => 'mdi:molecule-co2'
+                  style: |
+                    (value) => ( { color: 'black'} )
+                unit: ppm
+                round: 1
+                source:
+                  entity: sensor.magicair_co2
+              temp_in:
+                icon:
+                  template: () => 'tc:frost-point'
+                  style: |
+                    (value) => ( { color: 'blue'} )
+                unit: °C
+                round: 1
+                source:
+                  entity: sensor.tion_breezer_4s_1_temperature_in
+              temp_out:
+                icon:
+                  template: () => 'tc:heat-index'
+                  style: |
+                    (value) => ( { color: 'red'} )
+                unit: °C
+                round: 1
+                source:
+                  entity: sensor.tion_breezer_4s_1_temperature_out
+          - type: horizontal-stack
+            cards:
+              - type: custom:plant-picture-card
+                entity: plant.zamioculcas
+                title: Замиокулькас
+                image: /local/zamioculcas2.jpg
+title: Main

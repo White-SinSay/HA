@@ -1,0 +1,134 @@
+title: Home Assistant
+views:
+  - title: Video
+    path: video
+    icon: mdi:cctv
+    visible:
+      - user: 4da17e9fae8a4ed093e03642ca4647c5
+      - user: 88ac44474da4472ea6e5379505eb01d6
+      - user: edffae24d17b42489027f6f954f1386f
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+      - user: 213c53e24f984a97ab91e7c051a19180
+    badges: []
+    cards:
+      - camera_view: live
+        type: picture-glance
+        entities:
+          - entity: script.onvif_up_e1_pro_home
+            icon: mdi:arrow-up-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_up_e1_pro_home
+          - entity: script.onvif_down_e1_pro_home
+            icon: mdi:arrow-down-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_down_e1_pro_home
+          - entity: script.onvif_left_e1_pro_home
+            icon: mdi:arrow-left-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_left_e1_pro_home
+          - entity: script.onvif_right_e1_pro_home
+            icon: mdi:arrow-right-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_right_e1_pro_home
+          - entity: script.home_photo
+            icon: mdi:camera
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.home_photo
+          - entity: script.home_video
+            icon: mdi:video
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.home_video
+          - entity: switch.koridor_ch1
+            icon: mdi:lightbulb-on
+            state_color: true
+            tap_action:
+              action: call-service
+              service: switch.toggle
+              service_data:
+                entity_id: switch.koridor_ch1
+        camera_image: camera.e1_pro_home_profile001_substream
+      - type: picture-glance
+        aspect_ratio: 0%
+        camera_image: camera.e1_pro_office_profile001_substream
+        camera_view: live
+        entities:
+          - entity: script.onvif_up_e1_pro_office
+            icon: mdi:arrow-up-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_up_e1_pro_office
+          - entity: script.onvif_down_e1_pro_office
+            icon: mdi:arrow-down-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_down_e1_pro_office
+          - entity: script.onvif_left_e1_pro_office
+            icon: mdi:arrow-left-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_left_e1_pro_office
+          - entity: script.onvif_right_e1_pro_office
+            icon: mdi:arrow-right-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_right_e1_pro_office
+          - entity: script.office_photo
+            icon: mdi:camera
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.office_photo
+          - entity: script.office_video
+            icon: mdi:video
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.office_video
+          - entity: switch.sonoff_basic_2_relay
+            icon: mdi:lightbulb-group
+            state_color: true
+            tap_action:
+              action: call-service
+              service: switch.toggle
+              service_data:
+                entity_id: switch.sonoff_basic_2_relay
+      - type: picture-glance
+        title: Zav PRO
+        image: https://demo.home-assistant.io/stub_config/kitchen.png
+        entities: []
+        camera_view: live
+        camera_image: camera.vivotek_1_profile1
+      - type: picture-glance
+        title: vivotek-2
+        image: https://demo.home-assistant.io/stub_config/kitchen.png
+        entities: []
+        camera_view: live
+        camera_image: camera.vivotek_2_profile1

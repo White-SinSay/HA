@@ -1,0 +1,50 @@
+title: Home Assistant
+views:
+  - title: Scheduler
+    path: scheduler
+    icon: mdi:format-list-checks
+    visible:
+      - user: 4da17e9fae8a4ed093e03642ca4647c5
+      - user: 88ac44474da4472ea6e5379505eb01d6
+      - user: edffae24d17b42489027f6f954f1386f
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+      - user: 213c53e24f984a97ab91e7c051a19180
+    badges: []
+    cards:
+      - type: custom:scheduler-card
+        title: false
+        time_step: 1
+        discover_existing: true
+        include:
+          - automation.telegram_3d_pechat_nachata
+          - automation.telegram_3d_pechat_zakonchena
+          - climate.*
+          - cover.kabinet_windows
+          - cover.water_cold
+          - cover.water_hot
+          - input_number.balkon_windows1
+          - input_number.balkon_windows2
+          - input_number.balkon_windows3
+          - light.*
+          - media_player.*
+          - switch.d1_mini_*
+          - switch.denis_pc
+          - switch.domofon_*
+          - switch.esp12f_*
+          - switch.esp32_*
+          - switch.esp_01s_*
+          - switch.kolegov_power
+          - switch.kolegov_power_hold
+          - switch.office_taneza_office
+          - switch.office_taneza_pc
+          - switch.rb750_r2_nat_*
+          - switch.rb951ui_2nd_script_wol_comp1
+          - switch.sonoff_*
+          - switch.white_pc
+          - switch.white_trm
+          - switch.wled_nightlight
+          - vacuum.*
+        exclude:
+          - light.domofon_led
+          - switch.*_restart
+          - switch.domofon_restart

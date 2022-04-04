@@ -1,0 +1,196 @@
+views:
+  - title: Office
+    path: office
+    icon: mdi:office-building
+    visible:
+      - user: 4da17e9fae8a4ed093e03642ca4647c5
+      - user: 88ac44474da4472ea6e5379505eb01d6
+      - user: edffae24d17b42489027f6f954f1386f
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+      - user: 213c53e24f984a97ab91e7c051a19180
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: glance
+            show_state: false
+            entities:
+              - entity: switch.sonoff_basic_2_relay
+                secondary_info: last-changed
+                icon: mdi:lightbulb-group-outline
+                name: Свет
+                state_color: true
+                tap_action:
+                  action: toggle
+              - entity: binary_sensor.d1_mini_office_door
+                state_color: true
+                name: Вход
+              - entity: binary_sensor.d1_mini_office_door2
+                state_color: true
+                name: Выход
+              - entity: binary_sensor.d1_mini_office_windows
+                state_color: true
+                name: Окна
+              - entity: binary_sensor.d1_mini_office_pir
+                state_color: true
+                name: ДД
+            state_color: true
+            show_name: false
+            show_icon: true
+          - type: entities
+            entities:
+              - entity: switch.powerpc_office1_power
+                type: custom:multiple-entity-row
+                name: Таня
+                state_header: on/off
+                icon: mdi:desktop-tower-monitor
+                toggle: true
+                confirmation:
+                  text: Вы уверены?
+                state_color: true
+                entities:
+                  - entity: switch.rb951ui_2nd_nat_rdp_pc
+                    name: RDP
+                    toggle: true
+                  - entity: switch.powerpc_office1_power_hold
+                    name: hold
+                    toggle: true
+              - entity: sensor.office_temperature
+                type: custom:multiple-entity-row
+                name: Офис
+                entities:
+                  - entity: sensor.office_humidity
+                    name: false
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color:
+                        {% if states(config.entity)|int < 20 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                      }
+              - entity: sensor.office_ble_temperature_lywsd03mmc
+                type: custom:multiple-entity-row
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color:
+                        {% if states(config.entity)|int < 20 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                      }
+                name: LYWSD03MMC
+                entities:
+                  - entity: sensor.office_ble_humidity_lywsd03mmc
+                    name: false
+              - entity: sensor.pz_a
+                type: custom:multiple-entity-row
+                name: Офис
+                icon: mdi:counter
+                entities:
+                  - entity: sensor.pz_energy
+                    name: false
+                  - entity: sensor.pz_v
+                    name: false
+              - entity: switch.office_951ui_2nd_nat_rdp_pc
+          - type: entities
+            entities:
+              - entity: sensor.office_balans
+                name: РАСТР
+                card_mod:
+                  style: |
+                    :host {
+                      color: 
+
+                        {% if states(config.entity)|int < 80 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                      --paper-item-icon-color:
+                        {% if states(config.entity)|int < 80 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                      }
+
+                    }
+              - entity: sensor.hp_paper_print_daily
+                type: custom:multiple-entity-row
+                name: HP
+                state_header: daily
+                icon: mdi:printer
+                toggle: false
+                state_color: false
+                entities:
+                  - entity: sensor.hp_paper_print
+                    name: all
+                  - entity: sensor.hp_paper_print_monthly
+                    name: monthly
+              - entity: sensor.brother_paper_print_daily
+                type: custom:multiple-entity-row
+                name: Brother
+                state_header: daily
+                icon: mdi:printer
+                entities:
+                  - entity: sensor.brother_paper_print
+                    name: all
+                  - entity: sensor.brother_paper_print_monthly
+                    name: monthly
+      - type: vertical-stack
+        cards:
+          - entity: binary_sensor.d1_mini_office_door
+            type: custom:logbook-card
+            hiddenState:
+              - 'off'
+              - unavailable
+            max_items: 3
+            show:
+              end_date: false
+              start_date: true
+              icon: false
+              state: false
+              duration: true
+              separator: false
+            state_map: null
+            title: Входная дверь
+            history: 14
+            desc: true
+          - entity: binary_sensor.d1_mini_office_door2
+            type: custom:logbook-card
+            hiddenState:
+              - 'off'
+              - unavailable
+            max_items: 2
+            show:
+              end_date: false
+              start_date: true
+              icon: false
+              state: false
+              separator: false
+            state_map: null
+            title: Эвакуационная дверь
+          - entity: binary_sensor.d1_mini_office_windows
+            type: custom:logbook-card
+            hiddenState:
+              - 'off'
+              - unavailable
+            max_items: 2
+            show:
+              end_date: false
+              start_date: true
+              icon: false
+              separator: false
+              state: false
+            state_map: null
+            title: Окна
+title: Main

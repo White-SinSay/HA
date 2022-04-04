@@ -1,0 +1,805 @@
+views:
+  - title: water
+    path: water
+    icon: mdi:water-pump
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: sensor.bathroom_hot_water_temperature
+                state_header: current
+                type: custom:multiple-entity-row
+                name: Горячая
+                entities:
+                  - entity: sensor.bathroom_water_temperature_hot_min
+                    state_header: min
+                    name: min
+                    unit: °C
+                  - entity: sensor.bathroom_water_temperature_hot_max
+                    state_header: max
+                    name: max
+                    unit: °C
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: red
+              - entity: sensor.bathroom_cold_water_temperature
+                state_header: current
+                type: custom:multiple-entity-row
+                name: Холодная
+                entities:
+                  - entity: sensor.bathroom_water_temperature_cold_min
+                    state_header: min
+                    name: min
+                    unit: °C
+                  - entity: sensor.bathroom_water_temperature_cold_max
+                    state_header: max
+                    name: max
+                    unit: °C
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: blue
+              - type: divider
+              - entity: cover.bathroom_water_hot
+                secondary_info: position
+                icon: mdi:water-pump
+                name: Горячая
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: red
+              - entity: cover.bathroom_water_cold
+                secondary_info: position
+                icon: mdi:water-pump
+                name: Холодная
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: blue
+              - entity: cover.bathroom_water_boiler
+                secondary_info: position
+                name: Болер
+                icon: mdi:water-pump
+              - entity: switch.bathroom_water_boiler_power
+                name: Болер
+            state_color: false
+            title: Туалет
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: sensor.kitchen_hot_water_temperature
+                state_header: current
+                type: custom:multiple-entity-row
+                name: Горячая
+                entities:
+                  - entity: sensor.kitchen_water_temperature_hot_min
+                    state_header: min
+                    name: min
+                    unit: °C
+                  - entity: sensor.kitchen_water_temperature_hot_max
+                    state_header: max
+                    name: max
+                    unit: °C
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: red
+              - entity: sensor.kitchen_cold_water_temperature
+                state_header: current
+                type: custom:multiple-entity-row
+                name: Холодная
+                entities:
+                  - entity: sensor.kitchen_water_temperature_cold_min
+                    state_header: min
+                    name: min
+                    unit: °C
+                  - entity: sensor.kitchen_water_temperature_cold_max
+                    state_header: max
+                    name: max
+                    unit: °C
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: blue
+              - type: divider
+              - entity: cover.kitchen_water_hot
+                secondary_info: position
+                icon: mdi:water-pump
+                name: Горячая
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: red
+              - entity: cover.kitchen_water_cold
+                secondary_info: position
+                icon: mdi:water-pump
+                name: Холодная
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: blue
+              - entity: cover.kitchen_water_boiler
+                secondary_info: position
+                name: Болер
+                icon: mdi:water-pump
+              - entity: switch.kitchen_water_boiler_power
+                name: Болер
+            state_color: false
+            title: Кухня
+
+    id: data
+    icon: mdi:counter
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: binary_sensor.pzem_home_ds
+                type: custom:multiple-entity-row
+                name: Дом
+                icon: mdi:counter
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: black;
+                      color: black;
+                    }
+                entities:
+                  - entity: sensor.pz1_v
+                    name: false
+                  - entity: sensor.pz1_hz
+                    name: false
+              - entity: sensor.pz1_a
+                type: custom:multiple-entity-row
+                name: Электроплита
+                icon: mdi:counter
+                secondary_info: last-changed
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: #B8860B;
+                      color: #B8860B;
+                    }
+                entities:
+                  - entity: sensor.pz1_a_max
+                    name: false
+                  - entity: sensor.pz1_energy
+                    name: false
+              - entity: sensor.pz2_a
+                type: custom:multiple-entity-row
+                name: Кабинет
+                icon: mdi:counter
+                secondary_info: last-changed
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: #FF0000;
+                      color: #FF0000;
+                    }
+                entities:
+                  - entity: sensor.pz2_a_max
+                    name: false
+                  - entity: sensor.pz2_energy
+                    name: false
+              - entity: sensor.pz3_a
+                type: custom:multiple-entity-row
+                name: Комнаты
+                icon: mdi:counter
+                secondary_info: last-changed
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: #008000;
+                      color: #008000;
+                    }
+                entities:
+                  - entity: sensor.pz3_a_max
+                    name: false
+                  - entity: sensor.pz3_energy
+                    name: false
+              - entity: sensor.pz4_a
+                type: custom:multiple-entity-row
+                name: Кухня
+                icon: mdi:counter
+                secondary_info: last-changed
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: #0000FF;
+                      color: #0000FF;
+                    }
+                entities:
+                  - entity: sensor.pz4_a_max
+                    name: false
+                  - entity: sensor.pz4_energy
+                    name: false
+              - entity: sensor.pz0_a
+                type: custom:multiple-entity-row
+                name: Общее
+                icon: mdi:counter
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: #483D8B;
+                      color: #483D8B;
+                    }
+                entities:
+                  - entity: sensor.pz0_energy
+                    name: false
+              - entity: sensor.total_drink_water_yearly_round
+                type: custom:multiple-entity-row
+                name: Питьевая
+                state_header: Год
+                icon: mdi:cup-water
+                entities:
+                  - entity: sensor.total_drink_water_daily_round
+                    name: День
+                  - entity: sensor.total_drink_water_monthly_round
+                    name: Месяц
+              - type: divider
+              - entity: sensor.pz1_energy_monthly_single
+                name: PZ1 monthly
+              - entity: sensor.pz2_energy_monthly_single
+                name: PZ2 monthly
+              - entity: sensor.pz3_energy_monthly_single
+                name: PZ3 monthly
+              - entity: sensor.pz4_energy_monthly_single
+                name: PZ4 monthly
+              - entity: sensor.pz0_energy_monthly_single
+                name: PZ0 monthly
+              - entity: sensor.pz0_energy_real
+                type: custom:multiple-entity-row
+                name: Электросчётчик
+                icon: mdi:counter
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color: #483D8B;
+                      color: #483D8B;
+                    }
+                entities:
+                  - entity: input_number.korektirovka_pokazanii
+                    name: false
+          - type: energy-devices-graph
+
+    id: network
+    icon: mdi:ethernet
+    visible:
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: entities
+                entities:
+                  - entity: sensor.online
+                    name: Дом
+                  - entity: sensor.office_online
+                    name: Офис
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                name: CPU_M
+                entity: sensor.cpu_temperature
+                severity:
+                  green: 0
+                  yellow: 45
+                  red: 60
+                min: 0
+                max: 100
+              - type: gauge
+                name: CPU_M
+                unit: '%'
+                entity: sensor.processor_use
+                severity:
+                  green: 0
+                  yellow: 50
+                  red: 85
+              - type: gauge
+                name: ОЗУ_M
+                unit: '%'
+                entity: sensor.memory_use_percent
+                severity:
+                  green: 0
+                  yellow: 60
+                  red: 85
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                name: CPU_O
+                entity: sensor.office_processor_temperature
+                theme: oxfordblue
+                severity:
+                  green: 0
+                  yellow: 60
+                  red: 85
+              - type: gauge
+                name: CPU_O
+                unit: '%'
+                entity: sensor.office_processor_use_percent
+                theme: oxfordblue
+                severity:
+                  green: 0
+                  yellow: 50
+                  red: 85
+              - type: gauge
+                entity: sensor.office_memory_use_percent
+                min: 0
+                name: ОЗУ_О
+                severity:
+                  green: 0
+                  yellow: 60
+                  red: 85
+                max: 100
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                name: HDD use
+                unit: '%'
+                entity: sensor.disk_use_percent
+                severity:
+                  green: 0
+                  yellow: 60
+                  red: 85
+                min: 0
+                max: 100
+              - type: gauge
+                name: Размер БД
+                unit: Mb
+                entity: sensor.home_assistant_v2_db
+                max: 1536
+                severity:
+                  green: 0
+                  yellow: 1024
+                  red: 1536
+              - type: gauge
+                name: HDD use
+                unit: '%'
+                entity: sensor.office_disk_use_percent
+                theme: oxfordblue
+                severity:
+                  green: 0
+                  yellow: 60
+                  red: 85
+                max: 100
+              - type: gauge
+                name: Размер БД
+                unit: Mb
+                entity: sensor.office_home_assistant_v2_db
+                theme: oxfordblue
+                max: 1024
+                severity:
+                  green: 0
+                  yellow: 768
+                  red: 1024
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: sensor.rb760igs_temperature
+              - entity: sensor.rb760igs_wireless_clients
+              - entity: sensor.rb760igs_cpu_load
+              - entity: sensor.rb760igs_voltage
+              - entity: sensor.rb760igs_hdd_usage
+              - entity: sensor.rb760igs_memory_usage
+              - type: divider
+              - entity: binary_sensor.rpi_power_status
+                name: RPi Power status Home
+                card_mod:
+                  style: |
+                    :host {
+                      color: 
+                        {% if is_state('binary_sensor.rpi_power_status', 'off') %}
+                          green
+                        {% else %}
+                          red
+                        {% endif %}
+                        ;
+                      --paper-item-icon-color:
+                        {% if is_state('binary_sensor.rpi_power_status', 'off') %}
+                          green
+                        {% else %}
+                          red
+                        {% endif %}
+                        ;
+                      }
+
+                    }
+              - entity: binary_sensor.office_rpi_power_status
+                name: RPi Power status Office
+                card_mod:
+                  style: |
+                    :host {
+                      color: 
+                        {% if is_state('binary_sensor.office_rpi_power_status', 'off') %}
+                          green
+                        {% else %}
+                          red
+                        {% endif %}
+                        ;
+                      --paper-item-icon-color:
+                        {% if is_state('binary_sensor.office_rpi_power_status', 'off') %}
+                          green
+                        {% else %}
+                          red
+                        {% endif %}
+                        ;
+                      }
+
+                    }
+              - type: divider
+              - entity: sensor.hp_home_paper_print_daily
+                type: custom:multiple-entity-row
+                name: HP home
+                state_header: daily
+                icon: mdi:printer
+                entities:
+                  - entity: sensor.hp_home_paper_print
+                    name: all
+                  - entity: sensor.hp_home_paper_print_monthly
+                    name: monthly
+              - entity: sensor.kyocera_paper_print_daily
+                type: custom:multiple-entity-row
+                name: Kyocera
+                state_header: daily
+                icon: mdi:printer
+                entities:
+                  - entity: sensor.kyocera_paper_print
+                    name: all
+                  - entity: sensor.kyocera_paper_print_monthly
+                    name: monthly
+      - type: entities
+        entities:
+          - entity: sensor.powerpc_white_temperature
+            type: custom:multiple-entity-row
+            name: White PC
+            state_header: null
+            toggle: false
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: sensor.powerpc_white_12v
+                name: false
+                toggle: false
+          - entity: sensor.powerpc_denis_temperature
+            type: custom:multiple-entity-row
+            name: Denis PC
+            state_header: null
+            toggle: false
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: sensor.powerpc_denis_12v
+                name: false
+                toggle: false
+          - entity: sensor.powerpc_trm_temperature
+            type: custom:multiple-entity-row
+            name: TRM PC
+            state_header: null
+            toggle: false
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: sensor.powerpc_trm_12v
+                name: false
+                toggle: false
+          - entity: sensor.powerpc_office1_temperature
+            type: custom:multiple-entity-row
+            name: Office PC
+            state_header: null
+            toggle: false
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: sensor.powerpc_office1_12v
+                name: false
+                toggle: false
+          - type: divider
+          - entity: sensor.kolegov_temperature
+            type: custom:multiple-entity-row
+            name: Kolegov
+            state_header: null
+            toggle: false
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: sensor.kolegov_pc_on_today
+                type: attribute
+                attribute: value
+                name: false
+                toggle: false
+              - entity: sensor.kolegov_12v
+                name: false
+                toggle: false
+          - entity: switch.kolegov_power
+            type: custom:multiple-entity-row
+            name: Колегов
+            state_header: power
+            toggle: true
+            state_color: true
+            icon: mdi:desktop-tower-monitor
+            entities:
+              - entity: switch.kolegov_power_hold
+                name: hold
+                toggle: true
+      - type: entities
+        entities:
+          - entity: button.rb760igs_script_access_list_enable
+            name: WiFi acces-list/enable
+          - entity: button.rb760igs_script_access_list_disable
+            name: WiFi acces-list/disable
+        show_header_toggle: false
+
+    id: vacuum
+    icon: mdi:robot-vacuum
+    cards:
+      - type: custom:xiaomi-vacuum-map-card
+        language: ru
+        map_source:
+          camera: camera.xiaomi_cloud_map_extractor
+        calibration_source:
+          camera: true
+        entity: vacuum.masha
+        vacuum_platform: default
+        map_locked: true
+        two_finger_pan: true
+        map_modes:
+          - template: vacuum_clean_zone_predefined
+            predefined_selections:
+              - zones:
+                  - - 25262
+                    - 23027
+                    - 29412
+                    - 25877
+                icon:
+                  name: mdi:bed-king
+                  x: 27500
+                  'y': 24500
+              - zones:
+                  - - 32303
+                    - 22678
+                    - 35353
+                    - 25628
+                icon:
+                  name: hue:room-office
+                  x: 34000
+                  'y': 24500
+              - zones:
+                  - - 29827
+                    - 30305
+                    - 32527
+                    - 31755
+                  - - 29649
+                    - 25749
+                    - 31549
+                    - 30249
+                  - - 29401
+                    - 24298
+                    - 32401
+                    - 25798
+                icon:
+                  name: phu:rooms-hallway
+                  x: 30500
+                  'y': 27500
+              - zones:
+                  - - 32633
+                    - 30199
+                    - 35683
+                    - 32599
+                icon:
+                  name: mdi:silverware-fork-knife
+                  x: 34500
+                  'y': 31500
+              - zones:
+                  - - 31690
+                    - 25733
+                    - 35590
+                    - 30083
+                icon:
+                  name: hue:room-nursery
+                  x: 34500
+                  'y': 28500
+          - template: vacuum_clean_zone
+      - type: custom:xiaomi-vacuum-card
+        name: Ксюша
+        vendor: xiaomi
+        entity: vacuum.office_roborock_vacuum_e2
+   path: office
+    icon: mdi:office-building
+    visible:
+      - user: 4da17e9fae8a4ed093e03642ca4647c5
+      - user: 88ac44474da4472ea6e5379505eb01d6
+      - user: edffae24d17b42489027f6f954f1386f
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+      - user: 213c53e24f984a97ab91e7c051a19180
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: glance
+            show_state: false
+            entities:
+              - entity: switch.sonoff_basic_2_relay
+                secondary_info: last-changed
+                icon: mdi:lightbulb-group-outline
+                name: Свет
+                state_color: true
+                tap_action:
+                  action: toggle
+              - entity: binary_sensor.d1_mini_office_door
+                state_color: true
+                name: Вход
+              - entity: binary_sensor.d1_mini_office_door2
+                state_color: true
+                name: Выход
+              - entity: binary_sensor.d1_mini_office_windows
+                state_color: true
+                name: Окна
+              - entity: binary_sensor.d1_mini_office_pir
+                state_color: true
+                name: ДД
+            state_color: true
+            show_name: false
+            show_icon: true
+          - type: entities
+            entities:
+              - entity: switch.powerpc_office1_power
+                type: custom:multiple-entity-row
+                name: Таня
+                state_header: on/off
+                icon: mdi:desktop-tower-monitor
+                toggle: true
+                confirmation:
+                  text: Вы уверены?
+                state_color: true
+                entities:
+                  - entity: switch.rb951ui_2nd_nat_rdp_pc
+                    name: RDP
+                    toggle: true
+                  - entity: switch.powerpc_office1_power_hold
+                    name: hold
+                    toggle: true
+              - entity: sensor.office_temperature
+                type: custom:multiple-entity-row
+                name: Офис
+                entities:
+                  - entity: sensor.office_humidity
+                    name: false
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color:
+                        {% if states(config.entity)|int < 20 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                      }
+              - entity: sensor.office_ble_temperature_lywsd03mmc
+                type: custom:multiple-entity-row
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color:
+                        {% if states(config.entity)|int < 20 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                      }
+                name: LYWSD03MMC
+                entities:
+                  - entity: sensor.office_ble_humidity_lywsd03mmc
+                    name: false
+              - entity: sensor.pz_a
+                type: custom:multiple-entity-row
+                name: Офис
+                icon: mdi:counter
+                entities:
+                  - entity: sensor.pz_energy
+                    name: false
+                  - entity: sensor.pz_v
+                    name: false
+              - entity: switch.office_951ui_2nd_nat_rdp_pc
+          - type: entities
+            entities:
+              - entity: sensor.office_balans
+                name: РАСТР
+                card_mod:
+                  style: |
+                    :host {
+                      color: 
+
+                        {% if states(config.entity)|int < 80 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                      --paper-item-icon-color:
+                        {% if states(config.entity)|int < 80 %}
+                          red
+                        {% else %}
+                          green
+                        {% endif %}
+                        ;
+                      }
+
+                    }
+              - entity: sensor.hp_paper_print_daily
+                type: custom:multiple-entity-row
+                name: HP
+                state_header: daily
+                icon: mdi:printer
+                toggle: false
+                state_color: false
+                entities:
+                  - entity: sensor.hp_paper_print
+                    name: all
+                  - entity: sensor.hp_paper_print_monthly
+                    name: monthly
+              - entity: sensor.brother_paper_print_daily
+                type: custom:multiple-entity-row
+                name: Brother
+                state_header: daily
+                icon: mdi:printer
+                entities:
+                  - entity: sensor.brother_paper_print
+                    name: all
+                  - entity: sensor.brother_paper_print_monthly
+                    name: monthly
+      - type: vertical-stack
+        cards:
+          - entity: binary_sensor.d1_mini_office_door
+            type: custom:logbook-card
+            hiddenState:
+              - 'off'
+              - unavailable
+            max_items: 3
+            show:
+              end_date: false
+              start_date: true
+              icon: false
+              state: false
+              duration: true
+              separator: false
+            state_map: null
+            title: Входная дверь
+            history: 14
+            desc: true
+          - entity: binary_sensor.d1_mini_office_door2
+            type: custom:logbook-card
+            hiddenState:
+              - 'off'
+              - unavailable
+            max_items: 2
+            show:
+              end_date: false
+              start_date: true
+              icon: false
+              state: false
+              separator: false
+            state_map: null
+            title: Эвакуационная дверь
+          - entity: binary_sensor.d1_mini_office_windows
+            type: custom:logbook-card
+            hiddenState:
+              - 'off'
+              - unavailable
+            max_items: 2
+            show:
+              end_date: false
+              start_date: true
+              icon: false
+              separator: false
+              state: false
+            state_map: null
+            title: Окна
+title: Main

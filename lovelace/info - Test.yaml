@@ -1,0 +1,87 @@
+title: Home Assistant
+views:
+  - title: Test
+    path: test
+    visible:
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+      - user: 4da17e9fae8a4ed093e03642ca4647c5
+    icon: mdi:developer-board
+    badges: []
+    cards:
+      - type: entities
+        entities:
+          - entity: sensor.3d_print_power_max
+          - entity: input_boolean.tualet_goriachaia_voda
+          - entity: input_boolean.kukhnia_goriachaia_voda
+          - entity: sensor.wardrobe_total_drink_water
+      - type: media-control
+        entity: media_player.tv_samsung_led40
+      - type: entities
+        entities:
+          - entity: binary_sensor.trm_pc_on
+            secondary_info: last-changed
+          - entity: binary_sensor.powerpc_white_power_led
+            state_color: true
+            secondary_info: last-changed
+          - entity: binary_sensor.white_notebook_lan
+            state_color: true
+            secondary_info: last-changed
+            icon: phu:laptop-windows
+          - entity: binary_sensor.white_notebook_office
+            state_color: true
+            secondary_info: last-changed
+            icon: phu:laptop-windows
+          - entity: binary_sensor.white_notebook_wifi
+            state_color: true
+            secondary_info: last-changed
+            icon: phu:laptop-windows-alt
+      - type: thermostat
+        entity: climate.tion_breezer_4s_1
+      - square: false
+        columns: 3
+        type: grid
+        cards:
+          - type: entity
+            entity: sensor.magicair_co2
+            name: co2
+          - type: entity
+            entity: sensor.tion_breezer_4s_1_temperature_in
+            icon: tc:frost-point
+            name: in
+          - type: entity
+            entity: sensor.tion_breezer_4s_1_temperature_out
+            icon: tc:heat-index
+            name: out
+      - type: entities
+        entities:
+          - entity: binary_sensor.anita_door
+            name: Door
+            secondary_info: last-updated
+          - entity: sensor.anita_humidity
+            name: Humidity
+          - entity: sensor.anita_temperature
+            name: Temperature
+          - entity: sensor.anita_online
+            name: Online
+        title: anita
+      - type: light
+        entity: light.powerpc_trm_neopixel_light
+      - show_name: false
+        show_icon: true
+        show_state: true
+        type: glance
+        entities:
+          - sensor.magicair_co2
+          - sensor.tion_breezer_4s_1_temperature_in
+          - sensor.tion_breezer_4s_1_temperature_out
+      - type: entities
+        entities:
+          - entity: binary_sensor.esphome_update_available
+          - entity: binary_sensor.file_editor_update_available
+          - entity: binary_sensor.home_assistant_google_drive_backup_update_available
+          - entity: binary_sensor.let_s_encrypt_update_available
+          - entity: binary_sensor.mosquitto_broker_update_available
+          - entity: binary_sensor.samba_share_update_available
+          - entity: binary_sensor.zigbee2mqtt_update_available
+          - entity: sensor.hacs
+          - entity: binary_sensor.latest_version_update_available
