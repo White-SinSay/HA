@@ -1,0 +1,2102 @@
+- id: '1581266855781'
+  alias: auto / Сушилка - включение таймера при включении
+  description: ''
+  trigger:
+  - entity_id: switch.sonoff_1000a22106
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - entity_id: timer.3h_stove
+    service: timer.cancel
+  - service: timer.start
+    data:
+      duration: '0'
+    target:
+      entity_id: timer.3h_stove
+  initial_state: true
+  mode: single
+- id: '1581917708104'
+  alias: auto / Сушилка-сброс таймера при выключении
+  description: ''
+  trigger:
+  - entity_id: switch.sonoff_1000a22106
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition: []
+  action:
+  - entity_id: timer.3h_stove
+    service: timer.finish
+  initial_state: true
+  mode: single
+- id: '1582864912196'
+  alias: auto / Свет вкл. в коридоре 17:00-21:00
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: d4e211b4854a53542dc2828c9edceaae
+    entity_id: binary_sensor.koridor_door
+    domain: binary_sensor
+  condition:
+  - type: is_no_motion
+    condition: device
+    device_id: d4e211b4854a53542dc2828c9edceaae
+    entity_id: binary_sensor.koridor_pir1
+    domain: binary_sensor
+  - after: '16:30'
+    before: '21:00'
+    condition: time
+  - condition: state
+    entity_id: switch.sonoff_1000a6865a
+    state: 'off'
+  action:
+  - data: {}
+    entity_id: switch.sonoff_1000a6865a
+    service: switch.turn_on
+  initial_state: true
+  mode: single
+- id: letsencrypt-renewal
+  alias: service / Lets Encrypt Renewal
+  trigger:
+  - at: 00:00:00
+    platform: time
+  action:
+  - data:
+      addon: core_letsencrypt
+    service: hassio.addon_restart
+  initial_state: true
+  mode: single
+- id: '1583817064687'
+  alias: auto / Сушилка - запуск таймера при перезагрузке HA
+  description: ''
+  trigger:
+  - event: start
+    platform: homeassistant
+  condition:
+  - condition: state
+    entity_id: switch.sonoff_1000a22106
+    state: 'on'
+  action:
+  - data:
+      duration: '0'
+    service: timer.start
+    target:
+      entity_id: timer.3h_stove
+  initial_state: true
+  mode: single
+- id: '1583818532230'
+  alias: auto / Сушилка - выключение при окончании таймера
+  description: ''
+  trigger:
+  - entity_id: timer.3h_stove
+    platform: state
+    to: idle
+  condition: []
+  action:
+  - data: {}
+    service: switch.turn_off
+    target:
+      entity_id:
+      - switch.sonoff_1000a22106
+  initial_state: true
+  mode: single
+- id: '1584005800801'
+  alias: auto / LED лента, вкл при движении 21:00-06:00
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.corridor_motion
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: light.koridor_light
+      state: 'off'
+    - condition: state
+      entity_id: switch.sonoff_1000a6865a
+      state: 'off'
+    - after: '21:00'
+      before: 06:00
+      condition: time
+  action:
+  - type: turn_on
+    device_id: d4e211b4854a53542dc2828c9edceaae
+    entity_id: light.koridor_light
+    domain: light
+    brightness_pct: 50
+  - data: {}
+    entity_id: input_boolean.led_autostatus
+    service: input_boolean.turn_on
+  initial_state: true
+  mode: single
+- id: '1585196712689'
+  alias: auto / LED лента, выкл при отс. движении 21:00-06:00
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.corridor_motion
+    for: 00:00:20
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: input_boolean.led_autostatus
+    state: 'on'
+  action:
+  - type: turn_off
+    device_id: d4e211b4854a53542dc2828c9edceaae
+    entity_id: light.koridor_light
+    domain: light
+  - entity_id: input_boolean.led_autostatus
+    service: input_boolean.turn_off
+  initial_state: true
+  mode: single
+- id: '1592585522295'
+  alias: Telegram / Дом.Открыта дверь
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.koridor_door
+    for: 00:00:01
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.note9
+      state: 'off'
+    - condition: state
+      entity_id: binary_sensor.honor9x
+      state: 'off'
+  action:
+  - data:
+      message: '{{"\U0001F3E0"}}{{"\U0001F6AA"}} Открыта дверь
+
+        '
+    service: notify.telegram_white
+  - data:
+      entity_id: camera.e1_pro_home_profile000_mainstream
+      filename: /media/door.jpg
+    entity_id: camera.e1_pro_home_profile000_mainstream
+    service: camera.snapshot
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - data:
+      data:
+        photo:
+        - caption: Дом
+          file: /media/door.jpg
+      message: ''
+    service: notify.telegram_white
+  initial_state: true
+  mode: single
+- id: '1592738042069'
+  alias: Telegram / Дом. Открыт щиток
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.pzem_home_ds
+    for: 00:00:01
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: '{{"\U000026A1"}} Открыт электрощит
+
+        '
+    service: notify.telegram_white
+  initial_state: true
+  mode: single
+- id: '1594742445326'
+  alias: Telegram / raspberry cpu повышенная температура
+  description: ''
+  trigger:
+  - above: '55'
+    entity_id: sensor.cpu_temperature
+    for: 00:05:00
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: '{{"\U0001F321"}} raspberry cpu: {{ states(''sensor.cpu_temperature'')
+        }} °C
+
+        '
+    service: notify.telegram_white
+  mode: single
+- id: '1597823280511'
+  alias: service / dfplayer_volume
+  description: ''
+  trigger:
+  - entity_id: input_number.gromkost
+    platform: state
+  condition: []
+  action:
+  - data_template:
+      volume: '{{ states(''input_number.gromkost'') | int }}'
+    service: esphome.koridor_dfplayer_set_volume
+  mode: single
+- id: '1599845943129'
+  alias: Telegram / Дом. Показания
+  description: ''
+  trigger:
+  - at: 00:01
+    platform: time
+  condition:
+  - condition: state
+    entity_id: sensor.day
+    state: '1'
+  action:
+  - data:
+      message: '{{"\U0001F5D3"}}{{"\U0000FE0F"}} {{ states(''sensor.date'') }}
+
+        {{"\U000026A1"}} PZ1: {{ states(''sensor.pz1_energy'') }} kWh
+
+        {{"\U000026A1"}} PZ2: {{ states(''sensor.pz2_energy'') }} kWh
+
+        {{"\U000026A1"}} PZ3: {{ states(''sensor.pz3_energy'') }} kWh
+
+        {{"\U000026A1"}} PZ4: {{ states(''sensor.pz4_energy'') }} kWh
+
+        {{"\U000026A1"}}{{"\U00002A0A"}}: {{ states(''sensor.pz0_energy'') }} kWh
+
+        {{"\U0001F6B0"}}: {{ states(''sensor.total_drink_water_last_monthly_round'')
+        }} Л
+
+        '
+    service: notify.telegram
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: switch.toggle
+    target:
+      entity_id:
+      - switch.pz_1_reset_energy
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: switch.toggle
+    target:
+      entity_id:
+      - switch.pz_2_reset_energy
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: switch.toggle
+    target:
+      entity_id:
+      - switch.pz_3_reset_energy
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: switch.toggle
+    target:
+      entity_id:
+      - switch.pz_4_reset_energy
+  mode: single
+- id: '1600412592402'
+  alias: Telegram / Дом.Открыта дверь (Видео)
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.koridor_door
+    for: 00:00:00
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.note9
+      state: 'off'
+    - condition: state
+      entity_id: binary_sensor.honor9x
+      state: 'off'
+  action:
+  - data:
+      filename: /media/camera.mp4
+      lookback: 15
+    service: camera.record
+    target:
+      entity_id: camera.e1_pro_home_profile001_substream
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - service: notify.telegram_white
+    data:
+      data:
+        video:
+        - caption: Дом
+          file: /media/camera.mp4
+      message: ''
+  initial_state: true
+  mode: single
+- id: '1603338972439'
+  alias: Telegram / Денис. Использование техники
+  description: ''
+  trigger:
+  - platform: time
+    at: '18:00'
+  - platform: time
+    at: '23:58'
+  condition: []
+  action:
+  - service: notify.telegram_white
+    data:
+      message: "{{\"\\U0001F5D3\"}}{{\"\\U0000FE0F\"}} {{ states('sensor.date') }}\
+        \ {{ states('sensor.time') }} \n{{\"\\U0001F4BB\"}} ПК: {{ state_attr('sensor.denis_pc_on_today',\
+        \ 'value') }}\n{{\"\\U0001F4FA\"}} TV_S: {{ state_attr('sensor.tv_samsung_on_today',\
+        \ 'value') }}\n{{\"\\U0001F4FA\"}} TV_X: {{ state_attr('sensor.tv_xiaomi_on_today',\
+        \ 'value') }} \n"
+  mode: single
+- id: '1604557107666'
+  alias: Telegram / Обновления
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.hacs
+    above: '0'
+  - platform: state
+    entity_id: binary_sensor.latest_version_update_available
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.esphome_update_available
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.file_editor_update_available
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.home_assistant_google_drive_backup_update_available
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.let_s_encrypt_update_available
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.mosquitto_broker_update_available
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.samba_share_update_available
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.zigbee2mqtt_update_available
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.telegram_white
+    data:
+      message: '{{"\U000026A0"}} Есть обновление: {{state_attr(trigger.entity_id,
+        ''friendly_name'') }}
+
+        '
+  mode: single
+- id: '1605143599979'
+  alias: Telegram / Присутсвие ON
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.white_presence
+    platform: state
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  - entity_id: binary_sensor.taneza_presence
+    platform: state
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  - entity_id: binary_sensor.denis_presence
+    platform: state
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  condition:
+  - condition: time
+    before: '23:00'
+    after: 06:00
+  action:
+  - data:
+      message: '{{"\U0001F4AC"}} {{state_attr(trigger.entity_id, ''telegram'') }}
+        дома
+
+        '
+    service: notify.telegram_white
+  initial_state: false
+  mode: single
+- id: '1605443370106'
+  alias: Telegram / Маша.Ошибка
+  description: ''
+  trigger:
+  - entity_id: vacuum.masha
+    for: 00:00:05
+    platform: state
+    to: error
+  condition: []
+  action:
+  - data:
+      message: '{{"\U0001F9F9"}} Маша.Ошибка
+
+        '
+    service: notify.telegram_white
+  - data:
+      message: '{{"\U0001F9F9"}} .Ошибка
+
+        '
+    service: notify.telegram_taneza
+  initial_state: true
+  mode: single
+- id: '1605443481602'
+  alias: Telegram / Маша.Уборка начата
+  description: ''
+  trigger:
+  - entity_id: vacuum.masha
+    from: Charging
+    platform: state
+    to: Cleaning
+    for: 00:00:05
+    attribute: status
+  - platform: state
+    entity_id: vacuum.masha
+    attribute: status
+    from: Charging
+    to: Zoned cleaning
+    for: 00:00:05
+  condition: []
+  action:
+  - data:
+      message: '{{"\U0001F9F9"}} Маша.Уборка начата:{{ states(''input_select.uborka'')
+        }}
+
+        '
+    service: notify.telegram_white
+  - data:
+      message: '{{"\U0001F9F9"}} Маша.Уборка начата: {{ states(''input_select.uborka'')
+        }}
+
+        '
+    service: notify.telegram_taneza
+  initial_state: true
+  mode: single
+- id: '1605443556904'
+  alias: Telegram / Маша.Уборка окончена
+  description: ''
+  trigger:
+  - entity_id: vacuum.masha
+    from: Returning home
+    platform: state
+    to: Charging
+    attribute: status
+  condition: []
+  action:
+  - data:
+      message: '{{"\U0001F9F9"}} Маша.Уборка окончена
+
+        '
+    service: notify.telegram_white
+  - data:
+      message: '{{"\U0001F9F9"}} Маша.Уборка окончена
+
+        '
+    service: notify.telegram_taneza
+  - service: input_number.set_value
+    target:
+      entity_id: input_number.zone_clean
+    data:
+      value: 0
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.uborka
+    data:
+      option: Док. станция
+  initial_state: true
+  mode: single
+- id: '1606438720489'
+  alias: Telegram / Дом. Закончилась вода в увлажнителе
+  description: ''
+  trigger:
+  - for: 00:00:03
+    from: 'on'
+    platform: state
+    to: 'off'
+    entity_id: binary_sensor.sonoff_mini_1_water
+  condition:
+  - condition: state
+    entity_id: switch.sonoff_mini_1_relay
+    state: 'on'
+  action:
+  - data:
+      message: '{{"\U0001F4A7"}} Закончилась вода в увлажнителе
+
+        '
+    service: notify.telegram_white
+  initial_state: true
+  mode: single
+- id: '1606918759820'
+  alias: auto / Кухня - led на кухне on
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.sonoff_10009402e8
+    from: 'off'
+    to: 'on'
+  - platform: numeric_state
+    entity_id: sensor.pz1_a
+    above: '1'
+    for: 00:00:10
+  condition:
+  - condition: time
+    after: '17:00'
+    before: 06:00
+  action:
+  - service: light.turn_on
+    data:
+      brightness: 255
+    entity_id: light.kitchen_led
+  mode: single
+- id: '1606919273792'
+  alias: auto / Кухня - led на кухне off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.sonoff_10009402e8
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    entity_id: light.kitchen_led
+  mode: single
+- id: '1607083686881'
+  alias: auto / Кухня - led на кухне on (mpir)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.kitchen_mpir
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  - condition: state
+    entity_id: switch.sonoff_10009402e8
+    state: 'off'
+  - condition: state
+    entity_id: light.kitchen_led
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data:
+      brightness: 255
+    target:
+      entity_id: light.kitchen_led
+  - service: input_boolean.turn_on
+    data: {}
+    entity_id: input_boolean.led_kitchen
+  mode: single
+- id: '1607083738367'
+  alias: auto / Кухня - led на кухне off (mpir)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.kitchen_mpir
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+      milliseconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.led_kitchen
+    state: 'on'
+  action:
+  - service: light.turn_off
+    data: {}
+    entity_id: light.kitchen_led
+  - service: input_boolean.turn_off
+    data: {}
+    entity_id: input_boolean.led_kitchen
+  mode: single
+- id: '1607311289245'
+  alias: auto / Кухня - Вытяжка.Скорость1
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.pz1_a
+    above: '1'
+    for: 00:00:05
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.kitchen_fan1
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.kitchen_light
+  - service: light.turn_on
+    data:
+      data:
+        brightness: 255
+    entity_id: light.kitchen_led
+  mode: single
+- id: '1607311336975'
+  alias: auto / Кухня - Вытяжка.Скорость3
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.pz1_a
+    above: '20'
+    for: 00:00:05
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.kitchen_fan3
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.kitchen_light
+  - service: light.turn_on
+    entity_id: light.kitchen_led
+    data:
+      data:
+        brightness: 255
+  mode: single
+- id: '1607311389705'
+  alias: auto / Кухня - Вытяжка.Скорость0
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.pz1_a
+    for: 00:00:05
+    below: '0.5'
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.kitchen_fan1
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.kitchen_fan2
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.kitchen_fan3
+  - service: switch.turn_off
+    data: {}
+    entity_id: switch.kitchen_light
+  mode: single
+- id: '1607562473103'
+  alias: Telegram / Дома нет никто
+  description: ''
+  trigger:
+  - platform: state
+    to: 'off'
+    entity_id: binary_sensor.ble
+    from: 'on'
+  condition: []
+  action:
+  - data:
+      message: 'Дома нет никто
+
+        '
+    service: notify.telegram_white
+  mode: single
+- id: '1609165612821'
+  alias: auto / Кухня - Вытяжка.Скорость2
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.pz1_a
+    above: '15'
+    for: 00:00:05
+  condition: []
+  action:
+  - service: switch.turn_on
+    data: {}
+    entity_id: switch.kitchen_fan2
+  - service: switch.turn_on
+    entity_id: switch.kitchen_light
+  - service: light.turn_on
+    data:
+      data:
+        brightness: 255
+    entity_id: light.kitchen_led
+  mode: single
+- id: '1610471801837'
+  alias: auto / Подсветка телевизора ON
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.tv_xiaomi
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: switch.sonoff_1000cbebc6_1
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: switch.sonoff_1000cbebc6_2
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: light.bedroom_cupboard
+    from: 'on'
+    to: 'off'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: switch.sonoff_1000cbebc6_1
+      state: 'off'
+    - condition: state
+      entity_id: switch.sonoff_1000cbebc6_2
+      state: 'off'
+    - condition: state
+      entity_id: binary_sensor.tv_xiaomi
+      state: 'on'
+    - condition: time
+      after: '20:30'
+      before: 07:00
+    - condition: state
+      entity_id: light.bedroom_cupboard
+      state: 'off'
+  action:
+  - service: light.turn_on
+    target:
+      entity_id:
+      - light.bedroom_tv
+    data:
+      brightness_pct: 40
+  mode: single
+- id: '1610935595454'
+  alias: auto / Обнаружена протечка воды
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.bathroom_water_leak1
+    from: 'off'
+    to: 'on'
+    for: 00:00:03
+  - platform: state
+    entity_id: binary_sensor.bathroom_water_leak2
+    from: 'off'
+    to: 'on'
+    for: 00:00:03
+  - platform: state
+    entity_id: binary_sensor.bathroom_water_leak3
+    from: 'off'
+    to: 'on'
+    for: 00:00:03
+  - platform: state
+    entity_id: binary_sensor.bathroom_water_leak4
+    from: 'off'
+    to: 'on'
+    for: 00:00:03
+  - platform: state
+    entity_id: binary_sensor.wardrobe_water_leak1
+    from: 'off'
+    to: 'on'
+    for: 00:00:03
+  - platform: state
+    entity_id: binary_sensor.wardrobe_water_leak2
+    from: 'off'
+    to: 'on'
+    for: 00:00:03
+  - platform: state
+    entity_id: binary_sensor.wardrobe_water_leak3
+    from: 'off'
+    to: 'on'
+    for: 00:00:03
+  condition: []
+  action:
+  - service: notify.telegram_white
+    data:
+      message: '{{"\U0001F4A6"}} Обнаружена протечка воды: {{state_attr(trigger.entity_id,
+        ''telegram'') }}
+
+        '
+  - service: cover.close_cover
+    data: {}
+    entity_id: cover.water_boiler
+  - service: cover.close_cover
+    data: {}
+    entity_id: cover.water_cold
+  - service: cover.close_cover
+    data: {}
+    entity_id: cover.water_hot
+  mode: single
+- id: '1610939731118'
+  alias: auto / Профилактика кранов
+  description: ''
+  trigger:
+  - at: 05:30
+    platform: time
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: sensor.day
+      state: '1'
+    - condition: state
+      entity_id: sensor.day
+      state: '14'
+  action:
+  - service: cover.close_cover
+    target:
+      entity_id:
+      - cover.bathroom_water_cold
+      - cover.bathroom_water_hot
+      - cover.kitchen_water_cold
+      - cover.kitchen_water_hot
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - service: cover.open_cover
+    target:
+      entity_id:
+      - cover.bathroom_water_boiler
+      - cover.kitchen_water_boiler
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 40
+      milliseconds: 0
+  - data: {}
+    service: cover.close_cover
+    target:
+      entity_id:
+      - cover.bathroom_water_boiler
+      - cover.kitchen_water_boiler
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - service: cover.open_cover
+    target:
+      entity_id:
+      - cover.bathroom_water_cold
+      - cover.bathroom_water_hot
+      - cover.kitchen_water_cold
+      - cover.kitchen_water_hot
+  - service: notify.telegram_white
+    data:
+      message: '{{"\U000026A0"}} Профилактика кранов произведена
+
+        '
+  mode: single
+- id: '1613554196213'
+  alias: Telegram / Декор FS. Доступен
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.dekorfs
+    for: 00:01:30
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: '{{"\U0001F3E2"}}{{"\U00002714"}} Декор FS доступен
+
+        '
+    service: notify.telegram_white
+  mode: single
+- id: '1613554228500'
+  alias: Telegram / Декор FS. Недоступен
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.dekorfs
+    for: 00:01:30
+    platform: state
+    to: 'off'
+    from: 'on'
+  condition: []
+  action:
+  - data:
+      message: '{{"\U0001F3E2"}}{{"\U0000274C"}} Декор FS недоступен
+
+        '
+    service: notify.telegram_white
+  mode: single
+- id: '1616378973963'
+  alias: auto / Алиса sound 2
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.super_light
+    from: 'on'
+    to: 'off'
+    for: 00:01:00
+  condition:
+  - condition: time
+    after: '22:00'
+  action:
+  - service: script.yandex_volume_set_2
+  mode: single
+- id: '1616379047324'
+  alias: auto / Алиса sound 6
+  description: ''
+  trigger:
+  - platform: time
+    at: 09:30
+  condition: []
+  action:
+  - service: script.yandex_volume_set_6
+  mode: single
+- id: '1616688666749'
+  alias: Telegram / Test
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.kitchen_button_fan1
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.kitchen_button_fan2
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.kitchen_button_fan3
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.kitchen_button_fan_light
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: '{{"\U0001F6B0"}} нажата кнока
+
+        '
+    service: notify.telegram_white
+  mode: single
+- id: '1617711296556'
+  alias: Telegram / Присутсвие OFF
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.white_presence
+    platform: state
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  - platform: state
+    entity_id: binary_sensor.taneza_presence
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  - platform: state
+    entity_id: binary_sensor.denis_presence
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+    from: 'on'
+  condition:
+  - condition: time
+    before: '23:00'
+    after: 06:00
+  action:
+  - data:
+      message: '{{"\U0001F4AC"}} {{state_attr(trigger.entity_id, ''telegram'') }}
+        отсутсвует
+
+        '
+    service: notify.telegram_white
+  mode: single
+  initial_state: false
+- id: '1620065777250'
+  alias: Telegram / PZEM данные недоступны
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.pz1_a
+    to: unknown
+    for: 00:02
+  - platform: state
+    entity_id: sensor.pz2_a
+    to: unknown
+    for: 00:02
+  - platform: state
+    entity_id: sensor.pz3_a
+    to: unknown
+    for: 00:02
+  - platform: state
+    entity_id: sensor.pz4_a
+    to: unknown
+    for: 00:02
+  condition: []
+  action:
+  - data:
+      message: '{{"\U0001F9F9"}} PZEM данные недоступны
+
+        '
+    service: notify.telegram_white
+  - service: switch.turn_on
+    target:
+      entity_id: switch.pzem_home_restart
+  mode: single
+  initial_state: true
+- id: '1620702042209'
+  alias: auto / Glade
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.sonoff_1000af511a_1
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: switch.sonoff_1000af511a_1
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: '{{ as_timestamp(now()) - as_timestamp (state_attr(''automation.auto_glade2'',
+      ''last_triggered'')) | int > 60 }}'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.glade
+  mode: single
+- id: '1622015515669'
+  alias: Telegram / Youtube новые видео
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.ugolok_tekhnaria
+    attribute: url
+  - platform: state
+    entity_id: sensor.vladimir_ivakhov
+    attribute: url
+  condition: []
+  action:
+  - data:
+      message: '{{"\U0001F3B6"}} Новое видео на канале: {{state_attr(trigger.entity_id,''friendly_name'')
+        }} {{state_attr(trigger.entity_id,''url'') }}
+
+        '
+    service: notify.telegram_wdi
+  mode: single
+- id: '1623167630810'
+  alias: temp
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.mccgq01lm_1_magnet_on_off
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - service: script.yandex_tts_en
+  mode: single
+- id: '1629292157742'
+  alias: nfc - Выключение света
+  description: ''
+  trigger:
+  - platform: event
+    event_type: tag_scanned
+    event_data:
+      device_id: e7c0e2eca38cab66
+      tag_id: 461047b4-2344-4478-8497-2c95ad4d90b4
+  condition: []
+  action:
+  - service: script.1590857009869
+  mode: single
+- id: '1634136738842'
+  alias: Telegram / raspberry питание
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.rpi_power_status
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: '{{"\U0001F50C"}} raspberry. Проблема с питанием
+
+        '
+    service: notify.telegram_white
+  mode: single
+- id: '1634868438830'
+  alias: ' auto / TRM on'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.trm_pc_on
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  condition:
+  - condition: state
+    entity_id: binary_sensor.powerpc_trm_power_led
+    state: 'off'
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id: switch.powerpc_trm_power
+  mode: single
+- id: '1634868494348'
+  alias: ' auto / TRM off'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.trm_pc_on
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  condition:
+  - condition: state
+    entity_id: binary_sensor.powerpc_trm_power_led
+    state: 'on'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.powerpc_trm_power
+  mode: single
+- id: '1640150638770'
+  alias: Telegram / 3D печать закончена
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: 6f69eff2555bd8c0379b75742e392120
+    entity_id: sensor.3d_print_power
+    domain: sensor
+    below: 30
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+  condition:
+  - condition: state
+    entity_id: input_boolean.3d_pechat
+    state: 'on'
+  action:
+  - data:
+      entity_id: camera.vivotek_1_profile1
+      filename: /media/zav.jpg
+    entity_id: camera.vivotek_1_profile1
+    service: camera.snapshot
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.3d_pechat
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - data:
+      message: '{{"\U0001F5A8"}} Печать завершена
+
+        {{"\U000023F3"}} Время печати: {{ state_attr(''sensor.time_3dprint'', ''value'')
+        }}
+
+        {{"\U0001F50C"}} Потрачено: {{ states.sensor.power_3dprint_single.state }}
+        kWh
+
+        '
+    service: notify.telegram_white
+  - data:
+      data:
+        photo:
+        - caption: ZAV pro
+          file: /media/zav.jpg
+      message: test
+    service: notify.telegram_white
+  mode: single
+- id: '1640273070544'
+  alias: Telegram / 3D печать начата
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: 6f69eff2555bd8c0379b75742e392120
+    entity_id: sensor.3d_print_power
+    domain: sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+    above: 31
+  condition:
+  - condition: state
+    entity_id: input_boolean.3d_pechat
+    state: 'off'
+  action:
+  - data:
+      message: '{{"\U0001F5A8"}} Печать начата
+
+        '
+    service: notify.telegram_white
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.3d_pechat
+  - service: utility_meter.reset
+    target:
+      entity_id: utility_meter.power_3dprint
+  mode: single
+- id: '1641911569033'
+  alias: Telegram / HA cервер недоступен
+  description: ''
+  trigger:
+  - entity_id: sensor.remote_connection_to_dekor
+    platform: state
+    to: reconnecting
+    for: 00:00:10
+  - entity_id: sensor.remote_connection_to_office
+    platform: state
+    to: reconnecting
+    for: 00:00:10
+  - entity_id: sensor.remote_connection_to_rezerv
+    platform: state
+    to: reconnecting
+    for: 00:00:10
+  condition:
+  - condition: template
+    value_template: '{{ as_timestamp(now()) - as_timestamp (state_attr(''automation.telegram_ha_cerver_dostupen'',
+      ''last_triggered'')) | int > 30 }}'
+  action:
+  - service: notify.telegram_white
+    data:
+      message: '{{"\U0000274C"}} HA {{state_attr(trigger.entity_id, ''telegram'')
+        }} недоступен
+
+        '
+  mode: single
+- id: '1641911595549'
+  alias: Telegram / HA cервер доступен
+  description: ''
+  trigger:
+  - entity_id: sensor.remote_connection_to_dekor
+    to: connected
+    platform: state
+    for: 00:00:10
+  - entity_id: sensor.remote_connection_to_office
+    to: connected
+    platform: state
+    for: 00:00:10
+  - entity_id: sensor.remote_connection_to_rezerv
+    to: connected
+    platform: state
+    for: 00:00:10
+  condition:
+  - condition: template
+    value_template: '{{ as_timestamp(now()) - as_timestamp (state_attr(''automation.telegram_ha_cerver_nedostupen'',
+      ''last_triggered'')) | int > 30 }}'
+  action:
+  - service: notify.telegram_white
+    data:
+      message: '{{"\U00002705"}} HA {{state_attr(trigger.entity_id, ''telegram'')
+        }} доступен
+
+        '
+  mode: single
+- id: '1642412397877'
+  alias: Telegram / Дом. Показания (25 число)
+  description: ''
+  trigger:
+  - at: '13:00'
+    platform: time
+  condition:
+  - condition: state
+    entity_id: sensor.day
+    state: '25'
+  action:
+  - data:
+      message: '{{"\U0001F5D3"}}{{"\U0000FE0F"}} {{ states(''sensor.date'') }}
+
+        {{"\U000026A1"}}{{"\U00002A0A"}}: {{ states(''sensor.pz0_energy_real'') }}
+        kWh
+
+        '
+    service: notify.telegram
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  mode: single
+- id: '1644313951994'
+  alias: Telegram / Батарейка села
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.cabinet_battery_level
+    below: '30'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - platform: numeric_state
+    entity_id: sensor.kitchen_battery_level
+    below: '30'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - platform: numeric_state
+    entity_id: sensor.childroom_battery_level
+    below: '30'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - platform: numeric_state
+    entity_id: sensor.bedroom_battery_level
+    below: '30'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - platform: numeric_state
+    entity_id: sensor.okno_kukhnia_battery
+    below: '30'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - platform: numeric_state
+    entity_id: sensor.okno_spalnia_battery
+    below: '30'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.telegram_white
+    data:
+      message: '{{"\U0001F50B"}} Села батарейка на {{state_attr(trigger.entity_id,
+        ''friendly_name'') }}
+
+        '
+  mode: single
+- id: '1644327180621'
+  alias: auto / Обнаружена протечка воды (28-396)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.28_396_water_leak1
+    from: 'off'
+    to: 'on'
+    for: 00:00:03
+  - platform: state
+    entity_id: binary_sensor.28_396_water_leak2
+    from: 'off'
+    to: 'on'
+    for: 00:00:03
+  - platform: state
+    entity_id: binary_sensor.28_396_water_leak3
+    from: 'off'
+    to: 'on'
+    for: 00:00:03
+  condition: []
+  action:
+  - service: notify.telegram_white
+    data:
+      message: '{{"\U0001F4A6"}} Обнаружена протечка воды (28-396): ( {{state_attr(trigger.entity_id,
+        ''telegram'')}} )
+
+        '
+  - service: notify.telegram_28_396_navigator
+    data:
+      message: '{{"\U0001F4A6"}} Обнаружена протечка воды ( {{state_attr(trigger.entity_id,
+        ''telegram'')}} )
+
+        '
+  - service: notify.telegram_28_396
+    data:
+      message: '{{"\U0001F4A6"}} Обнаружена протечка воды ( {{state_attr(trigger.entity_id,
+        ''telegram'')}} )
+
+        '
+  mode: single
+- id: '1644926050281'
+  alias: Telegram / Превышение напряжения
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.powerpc_denis_12v
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    above: '12.5'
+  - platform: numeric_state
+    entity_id: sensor.powerpc_white_12v
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    above: '12.5'
+  - platform: numeric_state
+    entity_id: sensor.powerpc_trm_12v
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    above: '12.5'
+  - platform: numeric_state
+    entity_id: sensor.powerpc_office1_12v
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    above: '12.5'
+  condition: []
+  action:
+  - service: notify.telegram_white
+    data:
+      message: '{{"\U000026A1"}} Превышение напряжения на {{state_attr(trigger.entity_id,
+        ''telegram'') }}
+
+        '
+  mode: single
+- id: '1645421133410'
+  alias: Telegram / Колегов  (Использование техники)
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:30
+  condition: []
+  action:
+  - service: notify.telegram_kolegov
+    data:
+      message: "{{\"\\U0001F5D3\"}}{{\"\\U0000FE0F\"}} {{ states('sensor.date') }}\
+        \ {{ states('sensor.time') }} \n{{\"\\U0001F4BB\"}} ПК: {{ state_attr('sensor.kolegov_pc_on_today',\
+        \ 'value') }}\n"
+  mode: single
+- id: '1645878888139'
+  alias: Telegram / Колегов (отключение) (PowerOff)
+  trigger:
+  - platform: event
+    event_type: telegram_callback
+    event_data:
+      data: /kolegov_powerpc_off
+  action:
+  - service: telegram_bot.answer_callback_query
+    data_template:
+      callback_query_id: '{{ trigger.event.data.id }}'
+      message: '{{ ''Выключаю...'' if is_state(''binary_sensor.kolegov_power_led'',
+        ''on'') else ''Выключен'' }}'
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.kolegov_power
+  initial_state: true
+- id: '1645879110173'
+  alias: Telegram / Колегов (отключение) (с Кнопокой)
+  trigger:
+  - platform: state
+    to: 'on'
+    from: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 2
+    entity_id: binary_sensor.kolegov_power_led
+  - platform: time
+    at: '22:05:00'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.kolegov_power_led
+    state: 'on'
+  - condition: or
+    conditions:
+    - condition: time
+      after: '22:00:00'
+      before: '23:59:00'
+    - condition: time
+      after: 00:00:00
+      before: 07:00:00
+  action:
+  - service: notify.telegram_kolegov
+    data_template:
+      message: Компьютер включён
+      data:
+        inline_keyboard:
+        - '{{ ''Выключить:/kolegov_powerpc_off, Вырубить:/kolegov_powerpc_off_hold''
+          }}'
+  initial_state: true
+- id: '1645879605449'
+  alias: Telegram / Колегов (отключение) (PowerOff_hold)
+  description: ''
+  trigger:
+  - platform: event
+    event_type: telegram_callback
+    event_data:
+      data: /kolegov_powerpc_off_hold
+  condition: []
+  action:
+  - service: telegram_bot.answer_callback_query
+    data_template:
+      callback_query_id: '{{ trigger.event.data.id }}'
+      message: '{{ ''Вырубаю...'' if is_state(''binary_sensor.kolegov_power_led'',
+        ''on'') else ''Выключен'' }}'
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.kolegov_power_hold
+  mode: single
+  initial_state: true
+- id: '1647482373069'
+  alias: auto / Ванна FAN
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.sonoff_1000af511a_2
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - platform: state
+    entity_id: switch.sonoff_1000af511a_2
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: switch.sonoff_1000af511a_2
+        state: 'on'
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: switch.fan_bathroom
+    - conditions:
+      - condition: state
+        entity_id: switch.sonoff_1000af511a_2
+        state: 'off'
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.fan_bathroom
+    default: []
+  mode: single
+- id: '1647482979908'
+  alias: auto / Туалет FAN
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.sonoff_1000af511a_1
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  - platform: state
+    entity_id: switch.sonoff_1000af511a_1
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: switch.sonoff_1000af511a_1
+        state: 'on'
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        target:
+          entity_id: switch.fan_toilet
+    - conditions:
+      - condition: state
+        entity_id: switch.sonoff_1000af511a_1
+        state: 'off'
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.fan_toilet
+    default: []
+  mode: single
+- id: '1647483572876'
+  alias: auto / Домофон MUTE
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:00:00
+  - platform: time
+    at: '22:00:00'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: time
+        before: 08:00:00
+      sequence:
+      - service: switch.turn_off
+        data: {}
+        entity_id: switch.domofon_mute_sound
+      - service: input_number.set_value
+        data:
+          value: 80
+        entity_id: input_number.domofon_brightness
+    - conditions:
+      - condition: time
+        after: '21:00:00'
+      sequence:
+      - service: switch.turn_on
+        data: {}
+        entity_id: switch.domofon_mute_sound
+      - service: input_number.set_value
+        data:
+          value: 40
+        entity_id: input_number.domofon_brightness
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id:
+          - switch.domofon_automatically_open
+          - switch.domofon_automatically_open_once
+    default: []
+  mode: single
+- id: '1647484029128'
+  alias: Telegram / Каратуз
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.karatuz
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  - platform: state
+    entity_id: binary_sensor.karatuz
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.karatuz
+        state: 'on'
+      sequence:
+      - data:
+          message: '{{"\U0001F3E1"}}{{"\U00002714"}} Каратуз доступен
+
+            '
+        service: notify.telegram_white
+    - conditions:
+      - condition: state
+        entity_id: binary_sensor.karatuz
+        state: 'off'
+      sequence:
+      - data:
+          message: '{{"\U0001F3E1"}} {{"\U0000274C"}} Каратуз недоступен
+
+            '
+        service: notify.telegram_white
+    default: []
+  mode: single
+- id: '1647485504704'
+  alias: auto / Подсветка телевизора
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.tv_xiaomi
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: switch.sonoff_1000cbebc6_1
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: switch.sonoff_1000cbebc6_2
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: light.bedroom_cupboard
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: binary_sensor.tv_xiaomi
+    to: 'off'
+    from: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - platform: state
+    entity_id: switch.sonoff_1000cbebc6_1
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: switch.sonoff_1000cbebc6_2
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: light.bedroom_cupboard
+    from: 'off'
+    to: 'on'
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: switch.sonoff_1000cbebc6_1
+          state: 'off'
+        - condition: state
+          entity_id: switch.sonoff_1000cbebc6_2
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.tv_xiaomi
+          state: 'on'
+        - condition: time
+          after: '20:30'
+          before: 07:00
+        - condition: state
+          entity_id: light.bedroom_cupboard
+          state: 'off'
+      sequence:
+      - service: light.turn_on
+        target:
+          entity_id:
+          - light.bedroom_tv
+        data:
+          brightness_pct: 40
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: switch.sonoff_1000cbebc6_1
+          state: 'on'
+        - condition: state
+          entity_id: switch.sonoff_1000cbebc6_2
+          state: 'on'
+        - condition: state
+          entity_id: binary_sensor.tv_xiaomi
+          state: 'off'
+        - condition: time
+          after: '20:30'
+          before: 07:00
+        - condition: state
+          entity_id: light.bedroom_cupboard
+          state: 'on'
+      sequence:
+      - service: light.turn_off
+        target:
+          entity_id: light.bedroom_tv
+        data: {}
+    default: []
+- id: '1647487390378'
+  alias: auto / Подсветка телевизора OFF
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.tv_xiaomi
+    to: 'off'
+    from: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - platform: state
+    entity_id: switch.sonoff_1000cbebc6_1
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: switch.sonoff_1000cbebc6_2
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: light.bedroom_cupboard
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: light.bedroom_tv
+    state: 'on'
+  action:
+  - service: light.turn_off
+    target:
+      entity_id: light.bedroom_tv
+  mode: single
+- id: '1647842962242'
+  alias: Telegram / Открыто окно
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.okno_detskaia_contact
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    to: 'on'
+    from: 'off'
+  - platform: state
+    entity_id: binary_sensor.okno_kukhnia_contact
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    to: 'on'
+    from: 'off'
+  - platform: state
+    entity_id: binary_sensor.okno_spalnia_contact
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    to: 'on'
+    from: 'off'
+  condition: []
+  action:
+  - service: notify.telegram_white
+    data:
+      message: '{{"\U0001FA9F"}} Открыто {{state_attr(trigger.entity_id, ''friendly_name'')
+        }}
+
+        '
+  mode: single
+- id: '1647918240354'
+  alias: auto / гор.вода (кухня)
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.kitchen_hot_water_temperature
+    for: 00:05:00
+    below: '33'
+    id: kitchen_hot_water_off
+  - platform: numeric_state
+    entity_id: sensor.kitchen_hot_water_temperature
+    for: 00:10:00
+    above: '35'
+    id: kitchen_hot_water_on
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id: kitchen_hot_water_on
+        - condition: state
+          entity_id: input_boolean.kukhnia_goriachaia_voda
+          state: 'off'
+      sequence:
+      - service: notify.telegram_white
+        data:
+          message: "{{\"\\U0001F6B0\"}} Горячая вода на кухне включена \n"
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.kukhnia_goriachaia_voda
+        data: {}
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id: kitchen_hot_water_off
+        - condition: state
+          entity_id: input_boolean.kukhnia_goriachaia_voda
+          state: 'on'
+      sequence:
+      - service: notify.telegram_white
+        data:
+          message: '{{"\U0001F6B0"}} Горячая вода на кухне отключена
+
+            '
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.kukhnia_goriachaia_voda
+        data: {}
+    default: []
+  mode: single
+- id: '1647918870606'
+  alias: auto / гор.вода (туалет)
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.bathroom_hot_water_temperature
+    for: 00:05:00
+    below: '33'
+    id: bathroom_hot_water_off
+  - platform: numeric_state
+    entity_id: sensor.bathroom_hot_water_temperature
+    for: 00:10:00
+    above: '35'
+    id: bathroom_hot_water_on
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id: bathroom_hot_water_on
+        - condition: state
+          entity_id: input_boolean.tualet_goriachaia_voda
+          state: 'off'
+      sequence:
+      - service: notify.telegram_white
+        data:
+          message: "{{\"\\U0001F6B0\"}} Горячая вода в туалете включена \n"
+      - service: input_boolean.turn_on
+        target:
+          entity_id: input_boolean.tualet_goriachaia_voda
+        data: {}
+    - conditions:
+      - condition: and
+        conditions:
+        - condition: trigger
+          id: bathroom_hot_water_off
+        - condition: state
+          entity_id: input_boolean.tualet_goriachaia_voda
+          state: 'off'
+      sequence:
+      - service: notify.telegram_white
+        data:
+          message: '{{"\U0001F6B0"}} Горячая вода в туалете отключена
+
+            '
+      - service: input_boolean.turn_off
+        target:
+          entity_id: input_boolean.tualet_goriachaia_voda
+        data: {}
+    default: []
+  mode: single
+- id: '1647998348171'
+  alias: Telegram / Закрыто окно
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.okno_detskaia_contact
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    to: 'off'
+    from: 'on'
+  - platform: state
+    entity_id: binary_sensor.okno_kukhnia_contact
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    to: 'off'
+    from: 'on'
+  - platform: state
+    entity_id: binary_sensor.okno_spalnia_contact
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+    to: 'off'
+    from: 'on'
+  condition: []
+  action:
+  - service: notify.telegram_white
+    data:
+      message: '{{"\U0001FA9F"}} Закрыто {{state_attr(trigger.entity_id, ''friendly_name'')
+        }}
+
+        '
+  mode: single
+- id: '1648048214733'
+  alias: auto / Выключение RDP Денис
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.powerpc_denis_power
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: switch.rb760igs_nat_rdp_2
+    state: 'on'
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.rb760igs_nat_rdp_2
+  mode: single
