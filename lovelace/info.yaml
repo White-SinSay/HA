@@ -1,0 +1,853 @@
+title: Home Assistant
+views:
+  - title: Info
+    path: info
+    icon: mdi:information-variant
+    visible:
+      - user: 4da17e9fae8a4ed093e03642ca4647c5
+      - user: 88ac44474da4472ea6e5379505eb01d6
+      - user: edffae24d17b42489027f6f954f1386f
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+      - user: 213c53e24f984a97ab91e7c051a19180
+    badges: []
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: entities
+            entities:
+              - entity: binary_sensor.samsung_m12
+                type: custom:multiple-entity-row
+                name: Mobile
+                state_header: Денис
+                toggle: false
+                state_color: false
+                icon: mdi:cellphone
+                show_state: false
+                entities:
+                  - entity: binary_sensor.note9
+                    name: Вова
+                    toggle: false
+                    icon: mdi:cellphone
+                    state_color: true
+                  - entity: binary_sensor.honor9x
+                    name: Таня
+                    toggle: false
+                    icon: mdi:cellphone
+                    state_color: true
+                  - entity: binary_sensor.samsung_m12
+                    name: Денис
+                    toggle: false
+                    icon: mdi:cellphone
+                    state_color: true
+          - type: custom:logbook-card
+            title: Входная дверь
+            entity: binary_sensor.koridor_door
+            hiddenState:
+              - 'off'
+              - unavailable
+            max_items: 2
+            show:
+              end_date: false
+              start_date: true
+            state_map: null
+          - type: entities
+            title: Окна
+            entities:
+              - entity: binary_sensor.okno_kukhnia_contact
+                icon: mdi:window-closed-variant
+                state_color: true
+                name: Кухня
+                secondary_info: last-changed
+              - entity: binary_sensor.okno_spalnia_contact
+                icon: mdi:window-closed-variant
+                state_color: true
+                name: Спальня
+                secondary_info: last-changed
+              - entity: binary_sensor.okno_detskaia_contact
+                icon: mdi:window-closed-variant
+                state_color: true
+                name: Детская
+                secondary_info: last-changed
+          - type: entities
+            title: Движение
+            state_color: true
+            entities:
+              - entity: binary_sensor.childroom_pir
+                secondary_info: last-changed
+                name: Детская
+              - entity: binary_sensor.koridor_pir1
+                secondary_info: last-changed
+                name: Вход
+              - entity: binary_sensor.koridor_pir2
+                secondary_info: last-changed
+                name: Коридор
+              - entity: binary_sensor.balkon_mpir
+                secondary_info: last-changed
+                name: Балкон
+              - entity: binary_sensor.kitchen_mpir
+                secondary_info: last-changed
+                name: Кухня
+              - entity: binary_sensor.bathroom_pir
+                secondary_info: last-changed
+                name: Туалет
+      - type: custom:auto-entities
+        card:
+          type: entities
+          title: Отключеные автоматизации
+        filter:
+          include:
+            - domain: automation
+              state: 'off'
+          exclude: []
+        show_empty: false
+        sort:
+          method: none
+  - title: Ёлка
+    path: ''
+    icon: phu:christmas-tree-v2
+    badges: []
+    cards:
+      - type: conditional
+        conditions:
+          - entity: light.wled
+            state_not: unavailable
+        card:
+          type: entities
+          entities:
+            - entity: light.wled
+            - entity: switch.wled_nightlight
+            - entity: sensor.wled_estimated_current
+            - entity: select.wled_playlist
+            - entity: select.wled_preset
+            - entity: select.wled_color_palette
+          show_header_toggle: false
+      - type: conditional
+        conditions:
+          - entity: light.wled_2
+            state_not: unavailable
+        card:
+          type: entities
+          entities:
+            - entity: light.wled_2
+            - entity: switch.wled_nightlight_2
+            - entity: sensor.wled_estimated_current_2
+            - entity: select.wled_playlist_2
+            - entity: select.wled_preset_2
+            - entity: select.wled_color_palette_2
+          show_header_toggle: false
+      - type: conditional
+        conditions:
+          - entity: light.gyver_lamp
+            state_not: unavailable
+        card:
+          type: custom:light-entity-card
+          shorten_cards: false
+          consolidate_entities: true
+          child_card: false
+          hide_header: false
+          header: Гайвер лампа
+          color_wheel: false
+          persist_features: true
+          brightness: true
+          color_temp: false
+          white_value: false
+          color_picker: false
+          smooth_color_wheel: true
+          speed: true
+          intensity: true
+          force_features: false
+          show_slider_percent: true
+          full_width_sliders: false
+          brightness_icon: weather-sunny
+          white_icon: file-word-box
+          temperature_icon: thermometer
+          speed_icon: speedometer
+          intensity_icon: transit-connection-horizontal
+          entity: light.gyver_lamp
+          effects_list: true
+  - title: ESPHome info
+    path: esphome-info
+    icon: mdi:chip
+    visible:
+      - user: 4da17e9fae8a4ed093e03642ca4647c5
+      - user: 88ac44474da4472ea6e5379505eb01d6
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+    badges: []
+    cards:
+      - type: entities
+        entities:
+          - entity: switch.bathroom_restart
+            type: custom:multiple-entity-row
+            name: bathroom
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.bathroom_online
+                name: Uptime
+              - entity: sensor.bathroom_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.bathroom_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.bedroom_restart
+            type: custom:multiple-entity-row
+            name: bedroom
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.bedroom_online
+                name: Uptime
+              - entity: sensor.bedroom_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.bedroom_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.kabinet_restart
+            type: custom:multiple-entity-row
+            name: kabinet
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.kabinet_online
+                name: Uptime
+              - entity: sensor.kabinet_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.kabinet_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.kitchen_restart
+            type: custom:multiple-entity-row
+            name: kitchen
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.kitchen_online
+                name: Uptime
+              - entity: sensor.kitchen_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.kitchen_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.domofon_restart
+            type: custom:multiple-entity-row
+            name: domofon
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.domofon_online
+                name: Uptime
+              - entity: sensor.domofon_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.domofon_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.powerpc_denis_restart
+            type: custom:multiple-entity-row
+            name: powerpc_denis
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.powerpc_denis_online
+                name: Uptime
+              - entity: sensor.powerpc_denis_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.powerpc_denis_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.powerpc_trm_restart
+            type: custom:multiple-entity-row
+            name: powerpc_trm
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.powerpc_trm_online
+                name: Uptime
+              - entity: sensor.powerpc_trm_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.powerpc_trm_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.powerpc_white_restart
+            type: custom:multiple-entity-row
+            name: powerpc_white
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.powerpc_white_online
+                name: Uptime
+              - entity: sensor.powerpc_white_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.powerpc_white_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.pzem_home_restart
+            type: custom:multiple-entity-row
+            name: pzem_home
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.pzem_home_online
+                name: Uptime
+              - entity: sensor.pzem_home_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.pzem_home_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.sonoff_basic_2_restart
+            type: custom:multiple-entity-row
+            name: sonoff_basic_2
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.sonoff_basic_2_online
+                name: Uptime
+              - entity: sensor.sonoff_basic_2_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.sonoff_basic_2_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.sonoff_mini_1_restart
+            type: custom:multiple-entity-row
+            name: sonoff_mini_1
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.sonoff_mini_1_online
+                name: Uptime
+              - entity: sensor.sonoff_mini_1_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.sonoff_mini_1_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.wardrobe_restart
+            type: custom:multiple-entity-row
+            name: wardrobe
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.wardrobe_online
+                name: Uptime
+              - entity: sensor.wardrobe_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.wardrobe_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+      - type: entities
+        entities:
+          - entity: switch.powerpc_office1_restart
+            type: custom:multiple-entity-row
+            name: powerpc_office1
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.powerpc_office1_online
+                name: Uptime
+              - entity: sensor.powerpc_office1_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.powerpc_office1_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.d1_mini_office_restart
+            type: custom:multiple-entity-row
+            name: d1_mini_office
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.d1_mini_office_online
+                name: Uptime
+              - entity: sensor.d1_mini_office_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.d1_mini_office_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.pzem_office_restart
+            type: custom:multiple-entity-row
+            name: pzem_office
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.pzem_office_online
+                name: Uptime
+              - entity: sensor.pzem_office_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.pzem_office_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - type: divider
+          - entity: switch.28_396_restart
+            type: custom:multiple-entity-row
+            name: 28-396
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.28_396_online
+                name: Uptime
+              - entity: sensor.28_396_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.28_396_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+          - entity: switch.kolegov_restart
+            type: custom:multiple-entity-row
+            name: kolegov
+            toggle: true
+            state_color: true
+            entities:
+              - entity: sensor.kolegov_online
+                name: Uptime
+              - entity: sensor.kolegov_version
+                name: Version
+            card_mod:
+              style: |
+                :host {
+                   --card-mod-icon-color: 
+
+                      {% if states('sensor.kolegov_version')  == states('sensor.esphome_newest_version') %}
+                        green       
+                      {% else %}
+                        red
+                      {% endif %}
+                      ;
+                      }
+  - title: Battery
+    path: battery
+    icon: mdi:battery-charging-high
+    badges: []
+    cards:
+      - type: custom:battery-state-card
+        sort_by_level: asc
+        collapse: 50
+        entities:
+          - entity: sensor.okno_kukhnia_battery
+            name: Окно кухня
+            tap_action: more-info
+          - entity: sensor.okno_spalnia_battery
+            name: Окно спальня
+            tap_action: more-info
+          - entity: sensor.okno_detskaia_battery
+            name: Окно детская
+            tap_action: more-info
+          - entity: sensor.bedroom_battery_level
+            name: Термометр спальня
+            tap_action: more-info
+          - entity: sensor.cabinet_battery_level
+            name: Термометр кабинет
+            tap_action: more-info
+          - entity: sensor.kitchen_battery_level
+            name: Термометр кухня
+            tap_action: more-info
+          - entity: sensor.childroom_battery_level
+            name: Термометр детская
+            tap_action: more-info
+          - entity: sensor.office_ble_battery_lywsd03mmc
+            name: Термометр офис
+            tap_action: more-info
+  - title: Video
+    path: video
+    icon: mdi:cctv
+    visible:
+      - user: 4da17e9fae8a4ed093e03642ca4647c5
+      - user: 88ac44474da4472ea6e5379505eb01d6
+      - user: edffae24d17b42489027f6f954f1386f
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+      - user: 213c53e24f984a97ab91e7c051a19180
+    badges: []
+    cards:
+      - camera_view: live
+        type: picture-glance
+        entities:
+          - entity: script.onvif_up_e1_pro_home
+            icon: mdi:arrow-up-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_up_e1_pro_home
+          - entity: script.onvif_down_e1_pro_home
+            icon: mdi:arrow-down-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_down_e1_pro_home
+          - entity: script.onvif_left_e1_pro_home
+            icon: mdi:arrow-left-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_left_e1_pro_home
+          - entity: script.onvif_right_e1_pro_home
+            icon: mdi:arrow-right-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_right_e1_pro_home
+          - entity: script.home_photo
+            icon: mdi:camera
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.home_photo
+          - entity: script.home_video
+            icon: mdi:video
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.home_video
+          - entity: switch.koridor_ch1
+            icon: mdi:lightbulb-on
+            state_color: true
+            tap_action:
+              action: call-service
+              service: switch.toggle
+              service_data:
+                entity_id: switch.koridor_ch1
+        camera_image: camera.e1_pro_home_profile001_substream
+      - type: picture-glance
+        aspect_ratio: 0%
+        camera_image: camera.e1_pro_office_profile001_substream
+        camera_view: live
+        entities:
+          - entity: script.onvif_up_e1_pro_office
+            icon: mdi:arrow-up-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_up_e1_pro_office
+          - entity: script.onvif_down_e1_pro_office
+            icon: mdi:arrow-down-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_down_e1_pro_office
+          - entity: script.onvif_left_e1_pro_office
+            icon: mdi:arrow-left-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_left_e1_pro_office
+          - entity: script.onvif_right_e1_pro_office
+            icon: mdi:arrow-right-bold
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.onvif_right_e1_pro_office
+          - entity: script.office_photo
+            icon: mdi:camera
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.office_photo
+          - entity: script.office_video
+            icon: mdi:video
+            tap_action:
+              action: call-service
+              service: script.turn_on
+              service_data:
+                entity_id: script.office_video
+          - entity: switch.sonoff_basic_2_relay
+            icon: mdi:lightbulb-group
+            state_color: true
+            tap_action:
+              action: call-service
+              service: switch.toggle
+              service_data:
+                entity_id: switch.sonoff_basic_2_relay
+      - type: picture-glance
+        title: Zav PRO
+        image: https://demo.home-assistant.io/stub_config/kitchen.png
+        entities: []
+        camera_view: live
+        camera_image: camera.vivotek_1_profile1
+      - type: picture-glance
+        title: vivotek-2
+        image: https://demo.home-assistant.io/stub_config/kitchen.png
+        entities: []
+        camera_view: live
+        camera_image: camera.vivotek_2_profile1
+  - title: Scheduler
+    path: scheduler
+    icon: mdi:format-list-checks
+    visible:
+      - user: 4da17e9fae8a4ed093e03642ca4647c5
+      - user: 88ac44474da4472ea6e5379505eb01d6
+      - user: edffae24d17b42489027f6f954f1386f
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+      - user: 213c53e24f984a97ab91e7c051a19180
+    badges: []
+    cards:
+      - type: custom:scheduler-card
+        title: false
+        time_step: 1
+        discover_existing: true
+        include:
+          - automation.telegram_3d_pechat_nachata
+          - automation.telegram_3d_pechat_zakonchena
+          - climate.*
+          - cover.kabinet_windows
+          - cover.water_cold
+          - cover.water_hot
+          - input_number.balkon_windows1
+          - input_number.balkon_windows2
+          - input_number.balkon_windows3
+          - light.*
+          - media_player.*
+          - switch.d1_mini_*
+          - switch.denis_pc
+          - switch.domofon_*
+          - switch.esp12f_*
+          - switch.esp32_*
+          - switch.esp_01s_*
+          - switch.kolegov_power
+          - switch.kolegov_power_hold
+          - switch.office_taneza_office
+          - switch.office_taneza_pc
+          - switch.rb750_r2_nat_*
+          - switch.rb951ui_2nd_script_wol_comp1
+          - switch.sonoff_*
+          - switch.white_pc
+          - switch.white_trm
+          - switch.wled_nightlight
+          - vacuum.*
+        exclude:
+          - light.domofon_led
+          - switch.*_restart
+          - switch.domofon_restart
+  - title: Test
+    path: test
+    visible:
+      - user: 25db92a2c8a6438eb6a8a36acb531be8
+      - user: 4da17e9fae8a4ed093e03642ca4647c5
+    icon: mdi:developer-board
+    badges: []
+    cards:
+      - type: entities
+        entities:
+          - entity: sensor.3d_print_power_max
+          - entity: input_boolean.tualet_goriachaia_voda
+          - entity: input_boolean.kukhnia_goriachaia_voda
+          - entity: sensor.wardrobe_total_drink_water
+      - type: media-control
+        entity: media_player.tv_samsung_led40
+      - type: entities
+        entities:
+          - entity: binary_sensor.trm_pc_on
+            secondary_info: last-changed
+          - entity: binary_sensor.powerpc_white_power_led
+            state_color: true
+            secondary_info: last-changed
+          - entity: binary_sensor.white_notebook_lan
+            state_color: true
+            secondary_info: last-changed
+            icon: phu:laptop-windows
+          - entity: binary_sensor.white_notebook_office
+            state_color: true
+            secondary_info: last-changed
+            icon: phu:laptop-windows
+          - entity: binary_sensor.white_notebook_wifi
+            state_color: true
+            secondary_info: last-changed
+            icon: phu:laptop-windows-alt
+      - type: thermostat
+        entity: climate.tion_breezer_4s_1
+      - square: false
+        columns: 3
+        type: grid
+        cards:
+          - type: entity
+            entity: sensor.magicair_co2
+            name: co2
+          - type: entity
+            entity: sensor.tion_breezer_4s_1_temperature_in
+            icon: tc:frost-point
+            name: in
+          - type: entity
+            entity: sensor.tion_breezer_4s_1_temperature_out
+            icon: tc:heat-index
+            name: out
+      - type: entities
+        entities:
+          - entity: binary_sensor.anita_door
+            name: Door
+            secondary_info: last-updated
+          - entity: sensor.anita_humidity
+            name: Humidity
+          - entity: sensor.anita_temperature
+            name: Temperature
+          - entity: sensor.anita_online
+            name: Online
+        title: anita
+      - type: light
+        entity: light.powerpc_trm_neopixel_light
+      - show_name: false
+        show_icon: true
+        show_state: true
+        type: glance
+        entities:
+          - sensor.magicair_co2
+          - sensor.tion_breezer_4s_1_temperature_in
+          - sensor.tion_breezer_4s_1_temperature_out
+      - type: entities
+        entities:
+          - entity: binary_sensor.esphome_update_available
+          - entity: binary_sensor.file_editor_update_available
+          - entity: binary_sensor.home_assistant_google_drive_backup_update_available
+          - entity: binary_sensor.let_s_encrypt_update_available
+          - entity: binary_sensor.mosquitto_broker_update_available
+          - entity: binary_sensor.samba_share_update_available
+          - entity: binary_sensor.zigbee2mqtt_update_available
+          - entity: sensor.hacs
+          - entity: binary_sensor.latest_version_update_available
