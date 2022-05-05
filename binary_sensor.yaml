@@ -1,0 +1,349 @@
+
+
+  - platform: workday
+    country: RU
+    name: workday
+
+
+
+#   - platform: mqtt
+#     state_topic: "home-assistant/window/contact"
+#     sensors:
+#       new_year:
+#         friendly_name: "New Year"
+# #        device_class: connectivity
+#         value_template: >-
+#           {{ is_state('sensor.month', '1' or '12')
+#              and is_state('light.wled', 'on' or 'off') }}
+
+#       white_presence:
+#         friendly_name: "Присутствие Владимир"
+# #        device_class: connectivity
+#         value_template: >-
+#             {{ is_state('binary_sensor.nrf51822_white_1', 'on')
+#             or is_state('binary_sensor.nrf51822_white_2', 'on')
+#             or is_state('binary_sensor.nrf51822_white_3', 'on')
+#             or is_state('binary_sensor.note9', 'on') }
+
+##################################################
+#               platform: rpi_gpio               #
+##################################################
+
+#   - platform: rpi_gpio
+#     bouncetime: 350
+#     invert_logic: true
+#     pull_mode: DOWN
+#     ports:
+#       22: koridor door
+#       17: koridor Door2
+##################################################
+#               platform: template               #
+##################################################
+  - platform: template
+    sensors:
+      light_kitchen:
+        friendly_name: "Свет в кухне"
+        value_template: >-
+            {{ is_state('switch.sonoff_1000cbe48c_1', 'on')
+            or is_state('switch.sonoff_1000cbe48c_2', 'on')
+            or is_state('light.kitchen_led', 'on') }}
+      light_kabinet:
+        friendly_name: "Свет в кабинете"
+        value_template: >-
+            {{ is_state('light.kabinet_led_denis', 'on')
+            or is_state('light.kabinet_led_white', 'on')
+            or is_state('switch.sonoff_10009402e8', 'on')
+            or is_state('switch.sonoff_1000a21d1d', 'on') }}
+      light_bedroom:
+        friendly_name: "Свет в спальне"
+        value_template: >-
+            {{ is_state('light.bedroom_cupboard', 'on')
+            or is_state('switch.sonoff_1000cbebc6_1', 'on')
+            or is_state('switch.sonoff_1000cbebc6_2', 'on')
+            or is_state('light.bedroom_tv', 'on') }}
+      light_childroom:
+        friendly_name: "Свет в детской"
+        value_template: >-
+            {{ is_state('switch.sonoff_1000cbe41c_1', 'on')
+            or is_state('switch.sonoff_1000cbe41c_2', 'on')
+            or is_state('switch.sonoff_1000cbe8bb_1', 'on')
+            or is_state('switch.sonoff_1000cbe8bb_2', 'on') }}
+      light_koridor:
+        friendly_name: "Свет в коридоре"
+        value_template: >-
+            {{ is_state('switch.sonoff_100093fe75', 'on')
+            or is_state('switch.koridor_ch1', 'on')
+            or is_state('switch.koridor_ch2', 'on')
+            or is_state('switch.koridor_ch3', 'on') }}
+      light_bathroom:
+        friendly_name: "Свет в санузле"
+        value_template: >-
+            {{ is_state('switch.sonoff_1000af511a_1', 'on')
+            or is_state('switch.sonoff_1000af511a_2', 'on') }}
+# data_template:
+#   payload_template: '{{ states.sensor.speedtest_download.state }}'
+#   topic: emon/speedtest
+# service: mqtt.publish
+
+
+
+
+      new_year:
+        friendly_name: "New Year"
+#        device_class: connectivity
+        value_template: >-
+          {{ is_state('sensor.month', '1' or '12')
+             and is_state('light.wled', 'on' or 'off') }}
+
+      white_presence:
+        friendly_name: "Присутствие Владимир"
+#        device_class: connectivity
+        value_template: >-
+            {{ is_state('binary_sensor.nrf51822_white_1', 'on')
+            or is_state('binary_sensor.nrf51822_white_2', 'on')
+            or is_state('binary_sensor.nrf51822_white_3', 'on')
+            or is_state('binary_sensor.note9', 'on') }}
+
+      taneza_presence:
+        friendly_name: "Присутствие Татьяна"
+#        device_class: connectivity
+        value_template: >-
+            {{ is_state('binary_sensor.nrf51822_taneza_1', 'on')
+            or is_state('binary_sensor.nrf51822_taneza_2', 'on')
+            or is_state('binary_sensor.nrf51822_taneza_3', 'on')
+            or is_state('binary_sensor.honor9x', 'on') }}
+
+      denis_presence:
+        friendly_name: "Присутствие Денис"
+#        device_class: connectivity
+        value_template: >-
+            {{ is_state('binary_sensor.nrf51822_denis_1', 'on')
+            or is_state('binary_sensor.nrf51822_denis_2', 'on')
+            or is_state('binary_sensor.nrf51822_denis_3', 'on')
+            or is_state('binary_sensor.samsung_m12', 'on') }}
+
+      trm_pc_on:
+        friendly_name: "trm_pc_on"
+        device_class: connectivity
+        value_template: >-
+          {{ is_state('binary_sensor.powerpc_white_power_led', 'on')
+          or is_state('binary_sensor.white_notebook_lan', 'on')
+          or is_state('binary_sensor.white_notebook_office', 'on')
+          or is_state('binary_sensor.white_notebook_wifi', 'on') }}
+
+    #   nrf51822_white:
+    #     friendly_name: "nrf51822_white"
+    #     device_class: presence
+    #     value_template: >-
+    #       {{ is_state('binary_sensor.nrf51822_white_1', 'on')
+    #       or is_state('binary_sensor.nrf51822_white_2', 'on')
+    #       or is_state('binary_sensor.nrf51822_white_3', 'on') }}
+
+    #   nrf51822_taneza:
+    #     friendly_name: "nrf51822_taneza"
+    #     device_class: presence
+    #     value_template: >-
+    #       {{ is_state('binary_sensor.nrf51822_taneza_1', 'on')
+    #       or is_state('binary_sensor.nrf51822_taneza_2', 'on')
+    #       or is_state('binary_sensor.nrf51822_taneza_3', 'on') }}
+
+    #   nrf51822_denis:
+    #     friendly_name: "nrf51822_denis"
+    #     device_class: presence
+    #     value_template: >-
+    #       {{ is_state('binary_sensor.nrf51822_denis_1', 'on')
+    #       or is_state('binary_sensor.nrf51822_denis_2', 'on')
+    #       or is_state('binary_sensor.nrf51822_denis_3', 'on') }}
+
+      super_light:
+        friendly_name: "super_light"
+        value_template: >-
+          {{ is_state('light.bedroom_cupboard', 'on')
+          or is_state('light.bedroom_tv', 'on')
+          or is_state('light.wled', 'on')
+          or is_state('light.kabinet_led_white', 'on') 
+          or is_state('light.kabinet_led_denis', 'on') 
+          or is_state('light.kitchen_led', 'on')
+          or is_state('switch.sonoff_10009402e8', 'on')
+          or is_state('switch.sonoff_1000cbebc6_1', 'on')
+          or is_state('switch.sonoff_1000cbebc6_2', 'on')
+          or is_state('switch.sonoff_1000af511a_1', 'on')
+          or is_state('switch.sonoff_1000af511a_2', 'on')
+          or is_state('switch.sonoff_1000812ee0_1', 'on')
+          or is_state('switch.sonoff_1000812ee0_2', 'on')
+          or is_state('switch.sonoff_100093fe75', 'on')
+          or is_state('switch.sonoff_1000812ee0_3', 'on')
+          or is_state('switch.sonoff_1000cbe48c_1', 'on')
+          or is_state('switch.sonoff_1000cbe48c_2', 'on')
+          or is_state('switch.sonoff_1000cbe41c_1', 'on')
+          or is_state('switch.sonoff_1000cbe41c_2', 'on')
+          or is_state('switch.sonoff_1000cbe8bb_1', 'on')
+          or is_state('switch.sonoff_1000cbe8bb_2', 'on')
+          or is_state('switch.sonoff_1000a21d1d', 'on')
+          or is_state('switch.koridor_ch1', 'on')
+          or is_state('switch.koridor_ch2', 'on')
+          or is_state('switch.koridor_ch3', 'on')  }}
+
+      ha_update:
+        friendly_name: Home Assistant
+        value_template: >-
+          {% if (states('sensor.latest_version') != states('sensor.current_version')) %}
+            on
+          {% else %}
+            off
+          {% endif %}
+        icon_template: >-
+          {% if ("sensor.latest_version") != ("sensor.current_version") %}
+            mdi:checkbox-blank-circle-outline
+          {% else %}
+            mdi:checkbox-blank-circle
+          {% endif %}
+
+#   - platform: template
+#     sensors:
+#       doorbell:
+#         friendly_name: "Домофон"
+#         value_template: >-
+#           {{ is_state('binary_sensor.domofon_incoming_call', 'on') }}
+#         icon_color: >
+#             if ('state.switch.domofon_automatically_open_once' === 'on') return 'red';
+#             if ('state.switch.domofon_automatically_open' === 'on') return 'green';
+
+# #         hs_color: >-
+# #           {% if is_state('switch.domofon_automatically_open_once', 'on') %}
+# #             return 'rgb(235, 20, 0)'
+# #           {% elif is_state('switch.domofon_automatically_open', 'on') %}
+# #             return 'rgb(235, 20, 0)'
+# #           {% elif is_state('switch.domofon_automatically_reject', 'on') %}
+# #             return 'rgb(0, 20, 235)'
+# #           {% else %}
+# #             return 'rgb(100, 100, 100)';
+# #           {% endif %}
+
+#   - platform: template
+#     sensors:
+#       super_motion:
+#         friendly_name: "super_motion"
+#         device_class: motion
+#         value_template: >-
+#           {{ is_state('binary_sensor.d1_mini_childroom_pir', 'on')
+#           or is_state('binary_sensor.koridor_pir1', 'on')
+#           or is_state('binary_sensor.koridor_pir2', 'on')
+#           or is_state('binary_sensor.d1_mini_bedroom_mpir', 'on')
+#           or is_state('binary_sensor.balkon_mpir', 'on')
+#           or is_state('binary_sensor.kitchen_mpir', 'on')
+#           or is_state('timer.super_pir', 'active') }}
+
+
+
+#       ble:
+# #        friendly_name: "ble"
+#         device_class: occupancy
+#         value_template: >-
+#           {{ is_state('binary_sensor.nrf51822_1', 'on')
+#           or is_state('binary_sensor.nrf51822_2', 'on')
+#           or is_state('binary_sensor.nrf51822_3', 'on') }}
+
+    #   notebook:
+    #     friendly_name: "notebook"
+    #     device_class: connectivity
+    #     value_template: >-
+    #       {{ is_state('binary_sensor.notebook_eth', 'on')
+    #       or is_state('binary_sensor.notebook_wifi', 'on') }}
+
+    #   corridor_motion:
+    #     friendly_name: "corridor_motion"
+    #     device_class: motion
+    #     value_template: >-
+    #       {{ is_state('binary_sensor.koridor_pir1', 'on')
+    #       or is_state('binary_sensor.koridor_pir2', 'on')
+    #       or is_state('binary_sensor.koridor_pir3', 'on') }}
+
+
+
+    #   sushilka:
+    #     friendly_name: "Сушилка обуви"
+    #     value_template: >-
+    #       {{ is_state('switch.sonoff_1000a21d1d', 'on') }}
+    #     icon_template: >-
+    #       {% if is_state('switch.sonoff_1000a21d1d', 'on') %}
+    #         mdi:radiator
+    #       {% else %}
+    #         mdi:radiator-disabled
+    #       {% endif %}
+
+##################################################
+#                platform: ping                  #
+##################################################
+
+  - platform: ping
+    name: pz
+    host: 192.168.90.131
+    count: 2
+    scan_interval: 30
+
+  - platform: ping
+    host: 192.168.90.243
+    name: tv.samsung
+    count: 3
+    scan_interval: 30
+
+  - platform: ping
+    host: 192.168.90.244
+    name: tv.xiaomi
+    count: 3
+    scan_interval: 30
+
+  - platform: ping
+    host: 188.0.18.205
+    name: office
+    count: 5
+    scan_interval: 30
+
+  - platform: ping
+    host: 192.168.72.4
+    name: white_notebook_office
+    count: 2
+    scan_interval: 30
+
+  - platform: ping
+    host: 192.168.90.251
+    name: white_notebook_wifi
+    count: 2
+    scan_interval: 30
+
+  - platform: ping
+    host: 192.168.90.252
+    name: white_notebook_lan
+    count: 2
+    scan_interval: 30
+
+  - platform: ping
+    host: 95.188.97.71
+    name: karatuz
+    count: 2
+    scan_interval: 30
+
+  - platform: ping
+    host: 192.168.90.58
+    name: Note9
+    count: 2
+    scan_interval: 30
+    
+  - platform: ping
+    host: 192.168.90.59
+    name: Honor9X
+    count: 2
+    scan_interval: 30
+
+  - platform: ping
+    host: 192.168.90.55
+    name: samsung_m12
+    count: 2
+    scan_interval: 30
+
+  - platform: ping
+    host: 192.168.73.200
+    name: dekorfs
+    count: 2
+    scan_interval: 30

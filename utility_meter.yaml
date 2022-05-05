@@ -1,0 +1,133 @@
+ pz0_energy_monthly: # 3D Печать
+    source: sensor.pz0_energy
+    cycle: monthly
+    tariffs:
+     - single 
+
+ pz1_energy_monthly: # 3D Печать
+    source: sensor.pz1_energy
+    cycle: monthly
+    tariffs:
+     - single
+ pz2_energy_monthly: # 3D Печать
+    source: sensor.pz2_energy
+    cycle: monthly
+    tariffs:
+     - single
+
+ pz3_energy_monthly: # 3D Печать
+    source: sensor.pz3_energy
+    cycle: monthly
+    tariffs:
+     - single
+
+ pz4_energy_monthly: # 3D Печать
+    source: sensor.pz4_energy
+    cycle: monthly
+    tariffs:
+     - single
+
+ power_3dprint: # 3D Печать
+    source: sensor.3d_print_energy
+    cycle: yearly
+    tariffs:
+     - single  
+
+#  office_balans: # 3D Печать
+#     source: sensor.office_balans
+#     cycle: daily
+#     tariffs:
+#      - single  
+
+#  water_kukhnia_hot:
+#     source: input_number.voda_kukhnia_goriachaia
+#     cycle: monthly
+#     tariffs:
+#      - single
+
+#  water_kukhnia_cold:
+#     source: input_number.voda_kukhnia_kholodnaia
+#     cycle: monthly
+#     tariffs:
+#      - single
+
+#  water_tualet_hot:
+#     source: input_number.voda_tualet_goriachaia
+#     cycle: monthly
+#     tariffs:
+#      - single
+
+#  water_tualet_cold:
+#     source: input_number.voda_tualet_kholodnaia
+#     cycle: monthly
+#     tariffs:
+#      - single
+
+ drink_water_yearly: # Годовое потребление питьевой воды
+    source: sensor.wardrobe_total_drink_water
+    cycle: yearly
+    tariffs:
+     - single  
+
+ drink_water_monthly: # Месячное потребление питьевой воды
+    source: sensor.wardrobe_total_drink_water
+    cycle: monthly
+    tariffs:
+     - single  
+
+ drink_water_daily: # Дневное потребление питьевой воды
+    source: sensor.wardrobe_total_drink_water
+    cycle: daily
+    tariffs:
+     - single
+#################################
+ hp_paper_print_monthly: # Месячное потребление питьевой воды
+    source: sensor.hp_paper_print
+    cycle: monthly
+    # tariffs:
+    #  - single  
+
+ hp_paper_print_daily: # Дневное потребление питьевой воды
+    source: sensor.hp_paper_print
+    cycle: daily
+    # tariffs:
+    #  - single 
+#################################
+ brother_paper_print_monthly: # Месячное потребление питьевой воды
+    source: sensor.brother_paper_print
+    cycle: monthly
+    # tariffs:
+    #  - single  
+
+ brother_paper_print_daily: # Дневное потребление питьевой воды
+    source: sensor.brother_paper_print
+    cycle: daily
+    # tariffs:
+    #  - single
+#################################
+ kyocera_paper_print_monthly: # Месячное потребление питьевой воды
+    source: sensor.kyocera_paper_print
+    cycle: monthly
+    # tariffs:
+    #  - single  
+
+ kyocera_paper_print_daily: # Дневное потребление питьевой воды
+    source: sensor.kyocera_paper_print
+    cycle: daily
+    # tariffs:
+    #  - single
+#################################
+ hp_home_paper_print_monthly: # Месячное потребление питьевой воды
+    source: sensor.hp_home_paper_print
+    cycle: monthly
+    # tariffs:
+    #  - single  
+
+ hp_home_paper_print_daily: # Дневное потребление питьевой воды
+    source: sensor.hp_home_paper_print
+    cycle: daily
+    # tariffs:
+    #  - single
+#################################
+
+

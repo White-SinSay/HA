@@ -1,0 +1,469 @@
+  - platform: min_max
+    name: 30_299_temperature
+    type: mean
+    round_digits: 1
+    entity_ids:
+      - sensor.childroom_temperature
+      - sensor.bedroom_temperature
+      - sensor.kitchen_temperature
+      - sensor.cabinet_temperature
+
+##################################################
+#               platform: template               #
+##################################################
+  - platform: template
+    sensors:
+#########################
+      pz0_energy_real:
+        icon_template: mdi:counter
+#        icon: 
+        friendly_name: "Реальные показания счетчика"
+        value_template: >-
+          {{ states('sensor.pz0_energy') | float + states('input_number.korektirovka_pokazanii')| float }}
+        unit_of_measurement: "kWh"
+#########################
+      online:
+#          friendly_name: "Перезагрузка сервера -"
+        value_template: >
+
+             {% set uptime = as_timestamp (now()) -as_timestamp(states('sensor.uptime')) | int %}
+             {% set minutes = (( uptime % 3600) / 60) | int %}
+             {% set hours = ((uptime % 86400) / 3600) | int %}
+             {% set days = (uptime / 86400) | int %}
+
+               {% if uptime < 1 %}
+                 Меньше минуты
+               {% else %}
+                 {% if days > 0 %}
+                   {{ days }} д.
+                 {% endif %}
+                 {% if hours > 0 %}
+                   {% if days > 0 %}
+                     {{ ' ' }}
+                   {% endif %}
+                   {{ hours }} ч.
+                 {% endif %}
+                 {% if minutes > 0 %}
+                   {% if days > 0 or hours > 0 %}
+                     {{ ' ' }}
+                   {% endif %}
+                     {{ minutes }} мин.
+                 {% endif %}
+               {% endif %}
+        icon_template: mdi:clock-time-five-outline
+#########################
+      day:
+        friendly_name: "День"
+        value_template: >-
+          {{ strptime(states('sensor.date'), '%Y-%m-%d').day }}
+      month:
+        friendly_name: "Месяц"
+        value_template: >-
+          {{ strptime(states('sensor.date'), '%Y-%m-%d').month  }}
+#########################
+#       masha_filter_left_h:
+#         friendly_name: "masha_filter_left_h"
+# #        unit_of_measurement: "°C"
+#         value_template: "{{ ((states.sensor.masha_filter_left.state|float / 3600))|round(0) }}"
+#       masha_side_brush_left_h:
+#         friendly_name: "masha_side_brush_left_h"
+# #        unit_of_measurement: "°C"
+#         value_template: "{{ ((states.sensor.masha_side_brush_left.state|float / 3600))|round(0) }}"
+#       masha_main_brush_left_h:
+#         friendly_name: "masha_main_brush_left_h"
+# #        unit_of_measurement: "°C"
+#         value_template: "{{ ((states.sensor.masha_main_brush_left.state|float / 3600))|round(0) }}"
+#       masha_sensor_dirty_left_h:
+#         friendly_name: "masha_sensor_dirty_left"
+# #        unit_of_measurement: "°C"
+#         value_template: "{{ ((states.sensor.masha_sensor_dirty_left.state|float / 3600))|round(0) }}"
+#########################
+    #   total_drink_water_round:
+    #     friendly_name: "esp"
+    #     unit_of_measurement: л
+    #     value_template: '{{states.sensor.total_drink_water_min.state | round(0) }}'
+      total_drink_water_daily_round:
+        friendly_name: "Дневное потребление"
+        unit_of_measurement: л
+        value_template: '{{states.sensor.drink_water_daily_single.state | round(0) }}'
+      total_drink_water_monthly_round:
+        friendly_name: "Месяное потребление"
+        unit_of_measurement: л
+        value_template: '{{states.sensor.drink_water_monthly_single.state | round(0) }}'
+      total_drink_water_last_monthly_round:
+        friendly_name: "Прошлое месяное потребление"
+        unit_of_measurement: л
+        value_template: "{{state_attr('sensor.drink_water_monthly_single', 'last_period') | round(0) }}"
+      total_drink_water_yearly_round:
+        friendly_name: "Годовое потребление"
+        unit_of_measurement: л
+        value_template: '{{states.sensor.drink_water_yearly_single.state | round(0) }}'
+      total_drink_water_last_yearly_round:
+        friendly_name: "Прошлое годовое потребление"
+        unit_of_measurement: л
+        value_template: "{{ state_attr('sensor.drink_water_yearly_single', 'last_period') | round(0) }}"
+    #   temperatura_balkon:
+    #     friendly_name: "Текущая температура пола"
+    #     value_template: "{{ state_attr('climate.beok_tds21', 'external_temp') }}"
+    #     unit_of_measurement: "°C"
+
+##################################################
+#              platform: statistics              #
+##################################################
+
+
+  - platform: statistics
+    name: pz1_a_max
+    entity_id: sensor.pz1_a
+    sampling_size: 2880
+    precision: 0
+    max_age:
+      hours: 336
+    state_characteristic: value_max
+
+  - platform: statistics
+    name: pz2_a_max
+    entity_id: sensor.pz2_a
+    sampling_size: 2880
+    precision: 0
+    max_age:
+      hours: 336
+    state_characteristic: value_max
+
+  - platform: statistics
+    name: pz3_a_max
+    entity_id: sensor.pz3_a
+    sampling_size: 2880
+    precision: 0
+    max_age:
+      hours: 336
+    state_characteristic: value_max
+
+  - platform: statistics
+    name: pz4_a_max
+    entity_id: sensor.pz4_a
+    sampling_size: 2880
+    precision: 0
+    max_age:
+      hours: 336
+    state_characteristic: value_max
+
+  - platform: statistics
+    name: 3D print power max
+    entity_id: sensor.3d_print_power
+    sampling_size: 2880
+    precision: 0
+    max_age:
+      hours: 48
+    state_characteristic: value_max
+
+  - platform: statistics
+    name: Bathroom Water Temperature Cold max
+    entity_id: sensor.bathroom_cold_water_temperature
+    sampling_size: 2880
+    precision: 0
+    max_age:
+      hours: 48
+    state_characteristic: value_max
+    
+  - platform: statistics
+    name: Bathroom Water Temperature Hot max
+    entity_id: sensor.bathroom_hot_water_temperature
+    sampling_size: 2880
+    precision: 0
+    max_age:
+      hours: 48
+    state_characteristic: value_max
+
+  - platform: statistics
+    name: Bathroom Water Temperature Cold min
+    entity_id: sensor.bathroom_cold_water_temperature
+    sampling_size: 2880
+    precision: 0
+    max_age:
+      hours: 48
+    state_characteristic: value_min
+    
+  - platform: statistics
+    name: Bathroom Water Temperature Hot min
+    entity_id: sensor.bathroom_hot_water_temperature
+    sampling_size: 2880
+    precision: 0
+    max_age:
+      hours: 48
+    state_characteristic: value_min
+
+  - platform: statistics
+    name: Kitchen Water Temperature Cold max
+    entity_id: sensor.kitchen_cold_water_temperature
+    sampling_size: 2880
+    precision: 0
+    max_age:
+      hours: 48
+    state_characteristic: value_max
+    
+  - platform: statistics
+    name: Kitchen Water Temperature Hot max
+    entity_id: sensor.kitchen_hot_water_temperature
+    sampling_size: 2880
+    precision: 0
+    max_age:
+      hours: 48
+    state_characteristic: value_max
+
+  - platform: statistics
+    name: Kitchen Water Temperature Cold min
+    entity_id: sensor.kitchen_cold_water_temperature
+    sampling_size: 2880
+    precision: 0
+    max_age:
+      hours: 48
+    state_characteristic: value_min
+    
+  - platform: statistics
+    name: Kitchen Water Temperature Hot min
+    entity_id: sensor.kitchen_hot_water_temperature
+    sampling_size: 2880
+    precision: 0
+    max_age:
+      hours: 48
+    state_characteristic: value_min
+
+##################################################
+#                 platform: snmp                 #
+##################################################
+  - platform: snmp
+    name: "HP_paper_print"
+    host: 192.168.72.48
+    community: public
+    version: '1'
+    accept_errors: true
+    unit_of_measurement: "p"
+    baseoid: iso.3.6.1.2.1.43.10.2.1.4.1.1
+#    value_template: "{{value | int}}"
+    scan_interval: 60
+#    icon_template: mdi:printer
+
+  - platform: snmp
+    name: "Brother_paper_print"
+    host: 192.168.72.49
+    community: public
+    version: '1'
+    accept_errors: true
+    unit_of_measurement: "p"
+    baseoid: iso.3.6.1.2.1.43.10.2.1.4.1.1
+#    value_template: "{{value | int}}"
+    scan_interval: 60
+#    icon_template: mdi:printer
+
+  - platform: snmp
+    name: "Kyocera_paper_print"
+    host: 192.168.73.245
+    community: public
+    version: '1'
+    accept_errors: true
+    unit_of_measurement: "p"
+    baseoid: iso.3.6.1.2.1.43.10.2.1.4.1.1
+#    value_template: "{{value | int}}"
+    scan_interval: 60
+#    icon_template: mdi:printer
+
+  - platform: snmp
+    name: "HP_home_paper_print"
+    host: 192.168.90.233
+    community: public
+    version: '1'
+    accept_errors: true
+    unit_of_measurement: "p"
+    baseoid: iso.3.6.1.2.1.43.10.2.1.4.1.1
+#    value_template: "{{value | int}}"
+    scan_interval: 60
+#    icon_template: mdi:printer
+
+##################################################
+#             platform: history_stats            #
+##################################################
+
+#   - platform: history_stats
+#     name: kabinet_button1_test
+#     entity_id: binary_sensor.kabinet_button1
+#     state: 'on'
+#     type: count
+#     start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+#     end: '{{ now() }}'
+
+  - platform: history_stats
+    name: time_3dprint
+    entity_id: input_boolean.3d_pechat
+    state: 'on'
+    type: time
+    start: "{{ state_attr('automation.telegram_3d_pechat_nachata', 'last_triggered') }}"
+    end: "{{ state_attr('automation.telegram_3d_pechat_zakonchena', 'last_triggered') }}"
+
+  - platform: history_stats
+    name: denis_pc ON today
+    entity_id: binary_sensor.powerpc_denis_power_led
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: kolegov_pc ON today
+    entity_id: binary_sensor.kolegov_power_led
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=5, minute=0, second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: tv_xiaomi ON today
+    entity_id: binary_sensor.tv_xiaomi
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: tv_samsung ON today
+    entity_id: binary_sensor.tv_samsung
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: office_pc1 ON today
+    entity_id: binary_sensor.powerpc_office1_power_led
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: trm ON today
+    entity_id: binary_sensor.powerpc_trm_power_led
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now() }}'
+
+
+##################################################
+#                                                #
+##################################################
+
+
+#Уголок технаря
+  - platform: youtube
+    channel_id: UCzI016x7MItBtQCJiSWI7yA
+
+#Ивахов Владимир
+  - platform: youtube
+    channel_id: UCoZhZPAewlcDGRc_s6Masrw
+
+  - platform: scrape
+    name: Subscribers
+    resource: https://socialblade.com/youtube/user/ivahov555
+    select: "#youtube-stats-header-subs"
+    headers:
+      User-Agent: Mozilla/5.0
+    scan_interval: 1800
+
+  - platform: uptime
+    name: uptime
+
+#   - platform: command_line
+#     name: Supervisor
+# #    command: 'curl http://supervisor/supervisor/info -H "Authorization: Bearer $(printenv SUPERVISOR_TOKEN)" | jq ''{"newest_version":.data.version_latest,"current_version":.data.version,"addons":[.data.addons[] | select(.version != .installed)]}'''
+#     command: 'curl http://supervisor/supervisor/info -H "Authorization: Bearer $(printenv SUPERVISOR_TOKEN)" | jq ''{"newest_version":.data.version_latest,"current_version":.data.version,"addons":[.data.addons[] | select(.update_available)]}'''
+#     value_template: "{{ value_json.addons | length }}"
+#     json_attributes:
+#     - newest_version
+#     - current_version
+#     - addons
+
+  - platform: version
+    name: Current Version
+    image: raspberrypi4-64    ### Adjust for your system, see https://www.home-assistant.io/integrations/version/
+    source: local
+
+  - platform: version
+    name: Latest Version
+    image: raspberrypi4-64    ### Adjust for your system, see https://www.home-assistant.io/integrations/version/
+    source: hassio
+
+  - platform: time_date
+    display_options:
+      - 'date'
+      - 'time'
+
+  - platform: filesize
+    file_paths:
+      - /config/home-assistant_v2.db
+
+  - platform: systemmonitor
+    resources:
+    - type: processor_temperature
+    - type: processor_use
+    - type: disk_use_percent
+      arg: /
+    - type: memory_use_percent
+#    - type: last_boot
+#    - type: disk_free
+#      arg: /
+
+  - platform: command_line
+    name: CPU Temperature
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
+
+
+
+#  - platform: authenticated
+#    exclude:
+#     - 172.16.30.1
+#     - 172.30.32.2
+
+#  - platform: command_line
+#    command: "grep -c invalidpassword /CONFIG_DIR/home-assistant.log"
+#    name: badlogin
+
+#   - platform: statistics
+#     name: Water Temperature Cold round
+#     entity_id: sensor.cold_water_temperature
+#     sampling_size: 20
+#     precision: 1
+
+#   - platform: statistics
+#     name: Water Temperature Hot round
+#     entity_id: sensor.hot_water_temperature
+#     sampling_size: 20
+#     precision: 1
+
+    # max_age:
+    #   minutes: 30
+
+#      pz_energy:
+#        friendly_name: "Суммарное потребление энергии"
+#        value_template: "{{ ((states.sensor.pz1_energy.state|float+states.sensor.pz2_energy.state|float+states.sensor.pz3_energy.state|float+states.sensor.pz4_energy.state|float))|round(0) }}"
+#        unit_of_measurement: "kWh"
+#      pz_a:
+#        friendly_name: "Суммарная сила тока"
+#        value_template: "{{ ((states.sensor.pz1_a.state|float+states.sensor.pz2_a.state|float+states.sensor.pz3_a.state|float+states.sensor.pz4_a.state|float))|round(2) }}"
+#        unit_of_measurement: "A"
+
+
+#  - platform: google_keep
+#    username: !secret google_keep.username
+#    password: !secret google_keep.password
+#    labels:
+#     - 'Home Assistant'
+#     - 'Дела'
+#    pinned: true
+
+    
+#   - platform: openhardwaremonitor
+#     host: 192.168.90.239
+

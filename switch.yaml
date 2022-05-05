@@ -1,0 +1,69 @@
+#   - platform: wake_on_lan
+#     mac: 74:D4:35:89:58:40
+#     name: white-pc
+#     host: 192.168.90.254
+# #    icon: mdi:desktop-tower-monitor
+#     turn_off:
+#       service: script.white_pc_shutdown
+
+#   - platform: wake_on_lan
+#     mac: 00:1F:C6:48:90:DF
+#     name: denis-pc
+#     host: 192.168.90.253
+# #    icon: mdi:desktop-tower-monitor
+#     turn_off:
+#       service: script.denis_pc_shutdown
+
+#   - platform: wake_on_lan
+#     mac: 90:2B:34:A4:B3:73
+#     name: white-trm
+# #    icon: mdi:desktop-tower
+#     host: 192.168.90.239
+#     turn_off:
+# #      service: script.white_trm_shutdown
+#       service: hassio.rezerv_host_shutdown
+
+#  - platform: wake_on_lan
+#    mac: B0:6E:BF:7F:51:D9
+#    name: taneza-comp
+#    broadcast_address: 192.168.72.3
+#    icon: mdi:desktop-tower
+#    host: 192.168.72.3
+#    turn_off:
+#      service: script.taneza_comp_shutdown
+#switch.rb951ui_2nd_script_wol_comp
+
+#   - platform: template
+#     switches:
+#       sushilka:
+#         friendly_name: "Сушилка обуви"
+#         value_template: "{{ is_state('switch.sonoff_1000a21d1d', 'on') }}"
+#         # value_template: >-
+#         #   {% if is_state('switch.sonoff_1000a21d1d', 'off') %}
+#         #     off
+#         #   {% elif is_state('switch.sonoff_1000a21d1d', 'on') %}
+#         #     on
+#         #   {% else %}
+#         #     unavailable
+#         #   {% endif %}
+#         availability_template: >-
+#           {%- if not is_state("switch.sonoff_1000a21d1d", "unavailable") %}
+#             true
+#           {%- endif %}
+#         turn_on:
+#           service: switch.turn_on
+#           data:
+#             entity_id: switch.sonoff_1000a21d1d
+#         turn_off:
+#           service: switch.turn_off
+#           data:
+#             entity_id: switch.sonoff_1000a21d1d
+#         icon_template: >-
+#           {% if is_state('switch.sonoff_1000a21d1d', 'on') %}
+#             mdi:radiator
+#           {% elif is_state('switch.sonoff_1000a21d1d', 'off') %}
+#             mdi:radiator-disabled            
+#           {% else %}
+#             mdi:radiator-off
+#           {% endif %}
+          
