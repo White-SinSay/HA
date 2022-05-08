@@ -5,13 +5,14 @@
   - entity_id: switch.sonoff_1000a22106
     platform: state
     to: 'on'
+    from: 'off'
   condition: []
   action:
   - entity_id: timer.3h_stove
     service: timer.cancel
   - service: timer.start
     data:
-      duration: '0'
+      duration: '3:00:00'
     target:
       entity_id: timer.3h_stove
   initial_state: true
@@ -84,7 +85,7 @@
     service: timer.start
     target:
       entity_id: timer.3h_stove
-  initial_state: true
+  initial_state: false
   mode: single
 - id: '1583818532230'
   alias: auto / Сушилка - выключение при окончании таймера
@@ -355,18 +356,16 @@
   description: ''
   trigger:
   - platform: time
-    at: '18:00'
-  - platform: time
     at: '23:58'
   condition: []
   action:
   - service: notify.telegram_white
     data:
       message: "{{\"\\U0001F5D3\"}}{{\"\\U0000FE0F\"}} {{ states('sensor.date') }}\
-        \ {{ states('sensor.time') }} \n{{\"\\U0001F4BB\"}} ПК: {{ state_attr('sensor.denis_pc_on_today',\
-        \ 'value') }}\n{{\"\\U0001F4FA\"}} TV_S: {{ state_attr('sensor.tv_samsung_on_today',\
-        \ 'value') }}\n{{\"\\U0001F4FA\"}} TV_X: {{ state_attr('sensor.tv_xiaomi_on_today',\
-        \ 'value') }} \n"
+        \ {{ states('sensor.time') }} \n{{\"\\U0001F4BB\"}} ПК: {{ states.sensor.denis_pc_on_today_template.state\
+        \ }}\n{{\"\\U0001F4FA\"}} TV_S: {{ states.sensor.tv_samsung_on_today_template.state\
+        \ }}\n{{\"\\U0001F4FA\"}} TV_X: {{ states.sensor.tv_xiaomi_on_today_template.state\
+        \ }}\n"
   mode: single
 - id: '1604557107666'
   alias: Telegram / Обновления
@@ -376,35 +375,43 @@
     entity_id: sensor.hacs
     above: '0'
   - platform: state
-    entity_id: binary_sensor.latest_version_update_available
+    entity_id: update.home_assistant_core_update
     from: 'off'
     to: 'on'
   - platform: state
-    entity_id: binary_sensor.esphome_update_available
+    entity_id: update.esphome_update
     from: 'off'
     to: 'on'
   - platform: state
-    entity_id: binary_sensor.file_editor_update_available
+    entity_id: update.file_editor_update
     from: 'off'
     to: 'on'
   - platform: state
-    entity_id: binary_sensor.home_assistant_google_drive_backup_update_available
+    entity_id: update.home_assistant_google_drive_backup_update
     from: 'off'
     to: 'on'
   - platform: state
-    entity_id: binary_sensor.let_s_encrypt_update_available
+    entity_id: update.home_assistant_supervisor_update
     from: 'off'
     to: 'on'
   - platform: state
-    entity_id: binary_sensor.mosquitto_broker_update_available
+    entity_id: update.let_s_encrypt_update
     from: 'off'
     to: 'on'
   - platform: state
-    entity_id: binary_sensor.samba_share_update_available
+    entity_id: update.mosquitto_broker_update
     from: 'off'
     to: 'on'
   - platform: state
-    entity_id: binary_sensor.zigbee2mqtt_update_available
+    entity_id: update.samba_share_update
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: update.zigbee2mqtt_update
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: update.zigbee2mqtt_edge_update
     from: 'off'
     to: 'on'
   condition: []
@@ -1544,6 +1551,11 @@
     target:
       entity_id:
       - switch.kolegov_power
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.kolegov_power_hold
   initial_state: true
 - id: '1645879110173'
   alias: Telegram / Колегов (отключение) (с Кнопокой)
@@ -2099,4 +2111,98 @@
     data: {}
     target:
       entity_id: switch.rb760igs_nat_rdp_2
+  mode: single
+- id: '1650209317219'
+  alias: auto / Колегов выкл ночь
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.kolegov_power_led
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 1
+  condition:
+  - condition: or
+    conditions:
+    - condition: time
+      after: '22:00:00'
+    - condition: time
+      before: 07:00:00
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.kolegov_power_hold
+  mode: single
+- id: '1651155957215'
+  alias: service / Publish to MQTT
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.light_bathroom
+  - platform: state
+    entity_id: binary_sensor.light_bedroom
+  - platform: state
+    entity_id: binary_sensor.light_childroom
+  - platform: state
+    entity_id: binary_sensor.light_kabinet
+  - platform: state
+    entity_id: binary_sensor.light_kitchen
+  - platform: state
+    entity_id: binary_sensor.light_koridor
+  action:
+  - service: mqtt.publish
+    data_template:
+      payload_template: '{{ states(''binary_sensor.light_bathroom'') }}'
+      topic: smart-glass/binary_sensor/light_bathroom
+      retain: true
+  - service: mqtt.publish
+    data_template:
+      payload_template: '{{ states(''binary_sensor.light_bedroom'') }}'
+      topic: smart-glass/binary_sensor/light_bedroom
+      retain: true
+  - service: mqtt.publish
+    data_template:
+      payload_template: '{{ states(''binary_sensor.light_childroom'') }}'
+      topic: smart-glass/binary_sensor/light_childroom
+      retain: true
+  - service: mqtt.publish
+    data_template:
+      payload_template: '{{ states(''binary_sensor.light_kabinet'') }}'
+      topic: smart-glass/binary_sensor/light_kabinet
+      retain: true
+  - service: mqtt.publish
+    data_template:
+      payload_template: '{{ states(''binary_sensor.light_kitchen'') }}'
+      topic: smart-glass/binary_sensor/light_kitchen
+      retain: true
+  - service: mqtt.publish
+    data_template:
+      payload_template: '{{ states(''binary_sensor.light_koridor'') }}'
+      topic: smart-glass/binary_sensor/light_koridor
+      retain: true
+- id: '1651674207722'
+  alias: auto / Выключение RDP офис
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.powerpc_office1_power
+    from: 'on'
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: switch.rb951ui_2nd_nat_rdp_pc
+    state: 'on'
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.rb951ui_2nd_nat_rdp_pc
   mode: single
