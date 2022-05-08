@@ -22,6 +22,36 @@
           {{ states('sensor.pz0_energy') | float + states('input_number.korektirovka_pokazanii')| float }}
         unit_of_measurement: "kWh"
 #########################
+      denis_pc_on_today_template:
+#          friendly_name: "Перезагрузка сервера -"
+        value_template: >
+             {% set sensor1 = states.sensor.denis_pc_on_today.state  | float %}
+             {% set sensor2 = states.sensor.denis_pc_on_today.state  | int %}
+             {{sensor2}} ч.
+             {{ (((sensor1) - (sensor2) ) * 60)  | round(0) }} мин.
+        icon_template: mdi:clock-time-five-outline
+#########################
+      tv_samsung_on_today_template:
+#          friendly_name: "Перезагрузка сервера -"
+        value_template: >
+             {% set sensor1 = states.sensor.tv_samsung_on_today.state  | float %}
+             {% set sensor2 = states.sensor.tv_samsung_on_today.state  | int %}
+             {{sensor2}} ч.
+             {{ (((sensor1) - (sensor2) ) * 60)  | round(0) }} мин.
+        icon_template: mdi:clock-time-five-outline
+#########################
+      tv_xiaomi_on_today_template:
+#          friendly_name: "Перезагрузка сервера -"
+        value_template: >
+             {% set sensor1 = states.sensor.tv_xiaomi_on_today.state  | float %}
+             {% set sensor2 = states.sensor.tv_xiaomi_on_today.state  | int %}
+             {{sensor2}} ч.
+             {{ (((sensor1) - (sensor2) ) * 60)  | round(0) }} мин.
+        icon_template: mdi:clock-time-five-outline
+        
+        
+        
+#########################
       online:
 #          friendly_name: "Перезагрузка сервера -"
         value_template: >
