@@ -1,0 +1,37 @@
+alias: Telegram / Дом.Открыта дверь (Видео)
+description: ""
+trigger:
+  - entity_id: binary_sensor.koridor_door
+    for: "00:00:00"
+    from: "off"
+    platform: state
+    to: "on"
+condition:
+  - condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.mobile_white
+        state: "off"
+      - condition: state
+        entity_id: binary_sensor.mobile_taneza
+        state: "off"
+action:
+  - data:
+      filename: /media/camera.mp4
+    service: camera.record
+    target:
+      entity_id: camera.e1_pro_home_profile001_substream
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - service: notify.telegram_white
+    data:
+      data:
+        video:
+          - caption: Дом
+            file: /media/camera.mp4
+      message: ""
+initial_state: true
+mode: single
